@@ -17,7 +17,7 @@
 		<script type="text/javascript" src="../script/micokitmanage.js"></script>
 		<script type="text/javascript" src="../script/mico-user-0.1.js"></script>
 		<script type="text/javascript" src="../script/usermanage.js"></script>
-		<script type="text/javascript" src="../script/msgdic.js"></script>
+		<script type="text/javascript" src="../script/msgdic-zh.js"></script>
 		<style>
 			.ui-body-f {
 				background-color: #106EB7;
@@ -152,12 +152,12 @@
 					<span><a href="#">Log In</a></span>
 				</div>
 				<div class="forgotpsw">
-					<a href="#registerpage" data-transition="none"  onclick="changpswtag('0')">Forgot Password?</a>
+					<a href="#registerpage" data-transition="none">Forgot Password?</a>
 				</div>
 			</div>
 			<div class="toregistcls">
-				<div class="toregistbtn">
-					<span ><a href="#registerpage" data-transition="none" onclick="changpswtag('1')">Create Account</a></span>
+				<div class="toregistbtn" onclick="changpswtag('registerpage')">
+					<span ><a href="#" data-transition="none">Create Account</a></span>
 				</div>
 			</div>
 		</div>
@@ -187,8 +187,8 @@
 				</div>
 			</div>
 			<div class="registcls">
-				<div class="registbtn">
-					<span><a href="#loginpage" data-transition="none">Return to Login</a></span>
+				<div class="registbtn" onclick="changpswtag('loginpage')">
+					<span><a href="#" data-transition="none">Return to Login</a></span>
 				</div>
 			</div>
 		</div>
@@ -239,9 +239,9 @@
 			});
 		};
 		function changpswtag(tag) {
-			// alert(tag);
-			var header = $api.byId('pswtag');
-			$api.val(header, tag);
+			$.mobile.changePage("#" + tag + "", {
+				transition : "none"
+			});
 		}
 	</script>
 </html>
