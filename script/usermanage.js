@@ -81,7 +81,7 @@ $(function() {
 				// alert("nextstep --- " + JSON.stringify(ret));
 				if (ret) {
 					// openMainWin();
-					apiToast("Success", 2000);
+					apiToast(EDI_SUCCESS, 2000);
 					// window.location.href = "../index.html";
 					//slideup
 					$.mobile.changePage("#nextsteppage", {
@@ -120,7 +120,7 @@ $(function() {
 			if (pswtag == "1") {
 				$mxuser.setPassword(phone, password, function(ret, err) {
 					if (ret) {
-						apiToast("Success", 2000);
+						apiToast(EDI_SUCCESS, 2000);
 						// registerToEasyCloud(phone, password);
 						if (strDMlogin == 'ios') {
 							hidPro();
@@ -139,7 +139,7 @@ $(function() {
 			} else {
 				$mxuser.resetPassword(password, function(ret, err) {
 					if (ret) {
-						apiToast("Success", 2000);
+						apiToast(EDI_SUCCESS, 2000);
 						// registerToEasyCloud(phone, password);
 						// window.location.href = "../index.html";
 						if (strDMlogin == 'ios') {
@@ -186,7 +186,7 @@ $(function() {
 				var nickname = ret.text;
 				$mxuser.updateNickName(nickname, function(ret, err) {
 					if (ret) {
-						apiToast("Success", 2000);
+						apiToast(EDI_SUCCESS, 2000);
 						$("#nicknameid").text(nickname);
 					}
 				});
@@ -206,7 +206,7 @@ $(function() {
 				if (checkEmail(email)) {
 					$mxuser.updateEmail(email, function(ret, err) {
 						if (ret) {
-							apiToast("success", 2000);
+							apiToast(EDI_SUCCESS, 2000);
 							$("#emailid").text(email);
 						}
 					});
@@ -228,7 +228,7 @@ $(function() {
 				var psw = ret.text;
 				$mxuser.resetPassword(psw, function(ret, err) {
 					if (ret) {
-						apiToast("Success", 2000);
+						apiToast(EDI_SUCCESS, 2000);
 					}
 				});
 			}
@@ -257,7 +257,7 @@ $(function() {
 function registerToEasyCloud(phone, password) {
 	$mxuser.regToEasyCloud(phone, password, function(ret, err) {
 		if (ret) {
-			apiToast("Success", 2000);
+			apiToast(EDI_SUCCESS, 2000);
 			// window.location.href = "../index.html";
 		} else {
 			alert(JSON.stringify(err));
@@ -315,7 +315,7 @@ function getEmail() {
 
 ////打开首页
 //function openMainWin() {
-//	apiToast("Success", 1000);
+//	apiToast(EDI_SUCCESS, 1000);
 //
 //}
 

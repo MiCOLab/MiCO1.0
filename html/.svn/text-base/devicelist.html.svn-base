@@ -21,7 +21,7 @@
 		<script type="text/javascript" src="../script/micokitmanage.js"></script>
 		<script type="text/javascript" src="../script/mqttsev.js"></script>
 		<script type="text/javascript" src="../script/devdic.js"></script>
-		<script type="text/javascript" src="../script/msgdic.js"></script>
+		<script type="text/javascript" src="../script/msgdic-zh.js"></script>
 		<script type="text/javascript" src="../script/ionic.bundle.min.js"></script>
 		<script type="text/javascript" src="../script/zepto.min.js"></script>
 		<script type="text/javascript" src="../script/dragdealer.js"></script>
@@ -70,7 +70,7 @@
 		<div class="micocontent" data-role="page" id="homePage">
 			<div data-role="content" align="center">
 				<p>
-					<a href="#aboutPage" data-transition="none">loading...</a>
+					<a href="#aboutPage" data-transition="none">加载设备...</a>
 				</p>
 			</div>
 		</div>
@@ -233,13 +233,13 @@
 			<div data-role="content" class="canvascls" align="center">
 				<canvas id="colorPicker1"></canvas>
 				<br/>
-				<span class="colorspancls">Brightness</span>
+				<span class="colorspancls">亮度</span>
 				<div id="brightslider" class="dragdealer">
 					<div class="handle red-bar">
 						<span class="brightval" id="brightspanid"></span>
 					</div>
 				</div>
-				<span class="colorspancls">Saturation</span>
+				<span class="colorspancls">饱和度</span>
 				<div id="satslider" class="dragdealer">
 					<div class="handle red-bar">
 						<span class="satval" id="satspanid"></span>
@@ -260,10 +260,10 @@
 					<input type="text" data-theme="f" data-role="none" placeholder="SSID" id="wifi_ssid"/>
 				</div>
 				<div class="psw">
-					<input type="password" data-theme="f" data-role="none" placeholder="Password" id="wifi_psw"/>
+					<input type="password" data-theme="f" data-role="none" placeholder="密码" id="wifi_psw"/>
 				</div>
 				<div class="subbutton" onclick="getdevip()">
-					<span><a href="#">Search</a></span>
+					<span><a href="#">搜索</a></span>
 				</div>
 			</div>
 		</div>
@@ -271,16 +271,16 @@
 		<div class="micocontent" data-role="page" id="devmanage">
 			<div class="content">
 				<div class="phone">
-					<input type="number" data-theme="f" data-role="none" placeholder="Password" id="dev_psw"/>
+					<input type="number" data-theme="f" data-role="none" placeholder="设备密码" id="dev_psw"/>
 				</div>
 				<!--<div class="psw">
 				<input type="password" data-theme="f" data-role="none" placeholder="Password Confirmation" id="dev_psw_conf"/>
 				</div>-->
 				<div class="subbutton" onclick="ajaxgetdveid()">
-					<span><a href="#">Save</a></span>
+					<span><a href="#">保存</a></span>
 				</div>
 				<div class="savetipscls" align="center">
-					<span>Device is restarting, please click Save after 5 seconds.</span>
+					<span>设备需要重启，请5秒后再点击保存。</span>
 				</div>
 			</div>
 		</div>
@@ -300,16 +300,16 @@
 					<a href="#"><img src="../image/smallicon-daohang.png"/><span>Guide</span><img class="rightarr" src="../image/rightarr.png"/></a>
 					</li>-->
 					<li class="myselfrow myselflistcls" id="toAuthpage">
-						<a href="#"><img src="../image/shouquan.png"/><span>Authorize</span><img class="rightarr" src="../image/rightarr.png"/></a>
+						<a href="#"><img src="../image/shouquan.png"/><span>授权</span><img class="rightarr" src="../image/rightarr.png"/></a>
 					</li>
 					<li class="myselfrow myselflistcls" id="tofbpage">
-						<a href="#"><img src="../image/smallicon-fankui.png"/><span>Feedback</span><img class="rightarr" src="../image/rightarr.png"/></a>
+						<a href="#"><img src="../image/smallicon-fankui.png"/><span>吐槽</span><img class="rightarr" src="../image/rightarr.png"/></a>
 					</li>
 					<li class="myselfrow myselflistcls" id="touphispage">
-						<a href="#"><img src="../image/smallicon-shengji.png"/><span>History</span><img class="rightarr" src="../image/rightarr.png"/></a>
+						<a href="#"><img src="../image/smallicon-shengji.png"/><span>历史</span><img class="rightarr" src="../image/rightarr.png"/></a>
 					</li>
 					<li class="myselfrow myselflistcls" id="logout">
-						<a href="#"><img src="../image/smallicon-dengchu.png"/><span>LogOut</span></a>
+						<a href="#"><img src="../image/smallicon-dengchu.png"/><span>退出</span></a>
 					</li>
 				</ul>
 			</div>
@@ -319,7 +319,7 @@
 			<div class="fdcontent">
 				<textarea rows="10" id="fdcontent" class="fdcontentcls"></textarea>
 				<div class="subbutton" id="savefd">
-					<span><a href="#">Save</a></span>
+					<span><a href="#">提交反馈</a></span>
 				</div>
 			</div>
 		</div>
@@ -340,19 +340,19 @@
 			<div class="myselfrow">
 				<ul>
 					<li class="myselfrow myselflistcls" id="nickclsid">
-						<span>NickName</span>
+						<span>昵称</span>
 						<div class="devdetail" id="nicknameid">
-							NotSet
+							未设置
 						</div>
 					</li>
 					<li class="myselfrow myselflistcls" id="emailclsid">
 						<span>Email</span>
 						<div class="devdetail" id="emailid">
-							NotSet
+							未设置
 						</div>
 					</li>
 					<li class="myselfrow myselflistcls" id="pswclsid">
-						<span>Password</span>
+						<span>修改密码</span>
 					</li>
 				</ul>
 			</div>
@@ -445,25 +445,25 @@
 		});
 		//		前往feedback页面
 		$("#tofbpage").click(function() {
-			changpage("feedbackpage", "FeedBack");
+			changpage("feedbackpage", "吐槽");
 			PAGETAG = 7;
 		});
 		//前往用户信息修改界面
 		$("#toeditaccount").click(function() {
 			//页面跳转
-			changpage("editaccount", "Account");
+			changpage("editaccount", "帐户");
 			PAGETAG = 7;
 		});
 		//		前往Update页面
 		$("#touphispage").click(function() {
-			changpage("uphispage", "Update History");
+			changpage("uphispage", "更新历史");
 			var showid = $("#uphistextid");
 			readHisFile("uphis.txt", showid);
 			PAGETAG = 7;
 		});
 		//		前往authorize页面
 		$("#toAuthpage").click(function() {
-			changpage("authpage", "Authorize");
+			changpage("authpage", "授权");
 			PAGETAG = 8;
 			devicelist_getAuthDev();
 		});

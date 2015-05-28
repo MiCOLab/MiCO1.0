@@ -72,10 +72,10 @@ function devicelist_getDevList() {
 				itemHeight : '87',
 				rightBtn : [{
 					color : '#d4257f',
-					title : 'Delete'
+					title : '删除'
 				}, {
 					color : '#d35f84',
-					title : 'Edit'
+					title : '修改'
 				}],
 				"borderColor" : "#CCCCCC",
 				"cellBgColor" : "#FCFCFC",
@@ -243,7 +243,7 @@ function modifyDevName(devid, indexNo) {
 			if (inputname) {
 				$mico.editDevName(APP_ID, userToken, inputname, devid, function(ret, err) {
 					if (ret) {
-						apiToast('Good name', 3000);
+						apiToast('好名字', 3000);
 						devlistobj.refreshItem({
 							index : indexNo,
 							data : {
@@ -272,7 +272,7 @@ function deleteDevName(devid, indexNo) {
 		if (ret.buttonIndex == 1) {
 			$mico.deleteDev(APP_ID, userToken, devid, function(ret, err) {
 				if (ret) {
-					apiToast('All right', 3000);
+					apiToast('好吧', 3000);
 					devlistobj.deleteItem({
 						index : indexNo
 					});
@@ -282,7 +282,7 @@ function deleteDevName(devid, indexNo) {
 				}
 			});
 		} else {
-			apiToast("Well", 2000);
+			apiToast(GOOD_JOB, 2000);
 		}
 	});
 
@@ -603,7 +603,7 @@ function getWifiSsid() {
 
 //获取设备ip
 function getdevip() {
-	showProgress(CONNECT_NET, true);
+	showProgress(CONNECT_NET, false);
 	//此时正在搜索设备，不允许返回
 	PAGETAG = 100;
 	getdevipSign = 1;
@@ -622,7 +622,7 @@ function getdevip() {
 			if (ret.devip) {
 				dev_token = $.md5(ret.devip + userToken);
 				dev_ip = ret.devip;
-				changpage("devmanage", "Device Password");
+				changpage("devmanage", "设置设备密码");
 				hidPro();
 				$("#backleft").css("display", "none");
 			} else {
@@ -812,7 +812,7 @@ function checkpage() {
 		}, function(ret, err) {
 			if (ret.buttonIndex == 1) {
 				//do something 点确定
-				apiToast("Good job", 2000);
+				apiToast(GOOD_JOB, 2000);
 				showProgress(CONNECT_NET, true);
 			} else {
 				//do otherthing 点取消
@@ -829,7 +829,7 @@ function checkpage() {
 		}, function(ret, err) {
 			if (ret.buttonIndex == 1) {
 				//do something 点确定
-				apiToast("Good job", 2000);
+				apiToast(GOOD_JOB, 2000);
 				showProgress(SET_DEV_PSW, true);
 			} else {
 				//do otherthing 点取消

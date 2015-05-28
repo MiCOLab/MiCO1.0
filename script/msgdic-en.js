@@ -138,10 +138,11 @@ var EL_OV = "EasyLink overtime";
 //easylink 超时
 var CT_EL = "Continue EasyLink?";
 
+//棒棒的
+var GOOD_JOB ="Good job"
 
-
-
-
+//改好了
+var EDI_SUCCESS  ="success";
 
 
 
