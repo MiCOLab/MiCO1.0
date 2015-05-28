@@ -1,0 +1,186 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,initial-scale=1.0,width=device-width"/>
+		<title>APP</title>
+		<link rel="stylesheet" type="text/css" href="../css/api.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/header.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/jquery.mobile.min.css"/>
+		<script type="text/javascript" src="../script/jquery-2.1.3.js"></script>
+		<script type="text/javascript" src="../script/jquery.mobile-1.4.5.min.js"></script>
+		<script type="text/javascript" src="../script/av-0.5.0.min.js"></script>
+		<script type="text/javascript" src="../script/config.js"></script>
+		<script type="text/javascript" src="../script/api.js"></script>
+		<script type="text/javascript" src="../script/mico-bind-0.1.js"></script>
+		<script type="text/javascript" src="../script/mico-user-0.1.js"></script>
+		<script type="text/javascript" src="../script/usermanage.js"></script>
+		<script type="text/javascript" src="../script/micokitmanage.js"></script>
+		<!--<script type="text/javascript" src="../script/Messaging.js"></script>-->
+		<style>
+			.micocontent {
+				margin-top: 45px;
+				background-color: #F0F0F0;
+			}
+		</style>
+		<script type="text/javascript">
+			apiready = function() {
+				var header = $api.byId('topbar');
+				$api.fixIos7Bar(header);
+			};
+
+			function newmqtt() {
+				alert("micoMqtt");
+				var micoMqtt = api.require("micoMqtt");
+				var host = "http://api.easylink.io";
+				var username = "";
+				var password = "";
+				var clientID = "13122000202";
+				var topic = "d64f517c/aca213caec5c/out/read/#";
+				micoMqtt.startMqtt({
+					micoMqtt : micoMqtt,
+					host : host,
+					username : username,
+					password : password,
+					clientID : clientID,
+					topic : topic
+				}, function(ret, err) {
+
+					var html = "<li><div>" + JSON.stringify(ret.subs) + "</div></li>";
+					// var html = "<li><div>" + JSON.stringify(ret) + "</div></li>";
+					$("#messEdits").prepend(html);
+					// alert(JSON.stringify(ret));
+					// if (ret.subs) {
+					// alert(JSON.stringify(ret.subs));
+					// } else {
+					// api.alert({
+					// msg : err.msg
+					// });
+					// }
+				});
+			}
+
+			function publishmqtt() {
+				alert("------------publishmqtt--------------");
+				var micoMqtt = api.require("micoMqtt");
+				var topic = "d64f517c/aca213caec5c/in/read/app1";
+				var command = "{}";
+				micoMqtt.publish({
+					topic : topic,
+					command : command
+				}, function(ret, err) {
+					alert(JSON.stringify(ret.subs));
+				});
+			}
+
+			function stopmqtt() {
+				alert("------------stopmqtt--------------");
+				var micoMqtt = api.require("micoMqtt");
+				micoMqtt.stopMqtt(null, function(ret, err) {
+					alert(JSON.stringify(ret.subs));
+				});
+			}
+
+			function randomString(length) {
+				var text = "";
+				var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+				for (var i = 0; i < length; i++)
+					text += possible.charAt(Math.floor(Math.random() * possible.length));
+				return text;
+			}
+
+			function hex2bin(hex) {
+				if (!hex.match(/0x\w+/)) {
+					alert(hex);
+					return hex;
+				}
+				var buf = new ArrayBuffer(hex.length / 2 - 1);
+				// 2 bytes for each char
+				var bufView = new Uint8Array(buf);
+				for (var i = 2; i <= hex.length - 2; i += 2) {
+					bufView[i / 2 - 1] = parseInt(hex.substr(i, 2), 16);
+				}
+				alert(buf);
+				return buf;
+			}
+
+			function chgtxt(messageObj) {
+				console.log("messageObj = " + messageObj.payload);
+				var html = "<li><div>" + messageObj.payload + "</div></li>";
+				$("#messEdits").prepend(html);
+				//				var devidtopic = $api.byId('devidtopic');
+				//				$api.text(devidtopic, messageObj);
+			}
+
+			function sleeprun() {
+				var int = self.setInterval("publishtest()", 1000)
+			}
+
+			function mqtttest() {
+				var devidtopic = $api.byId('devidtopic');
+				$api.val(devidtopic, "d64f517c/aca213caec5c/#");
+				//				var i = 0;
+				//				for (; i < 15; ) {
+				//					console.log("i = " + i + " 求余后 = " + ((i++) % 5 + 1));
+				//				}
+				websocketclient.connect();
+				//				var mqtt = require('mqtt');
+				//				client = mqtt.createClient(1883, 'localhost');
+				//				client.subscribe('testMessage');
+				//				client.publish('testMessage', '发布测试信息');
+				//				client.on('message', function(topic, message) {
+				//					console.log(message);
+				//					client.end();
+				//				});
+				//				var mqtt = require('mqtt');
+				//				var username = '13122000202';
+				//				var password = '123456';
+				//				var hostname = 'http://api.easylink.io';
+				//				var topic = 'd64f517c/aca213caec5c/out';
+				//				var url = 'mqtt://' + username + ':' + password + '@' + hostname;
+				//				console.log(url);
+				//				var client = mqtt.connect(url);
+				//				// 订阅主题
+				//				client.subscribe(topic);
+				//				client.on('message', function(topic, message) {
+				//					console.log(topic);
+				//					console.log(message);
+				//				});
+			}
+
+			function publishtest() {
+				//				var hapayload = hex2bin($('#publishPayload').val());
+				websocketclient.publish("d64f517c/aca213caec5c/in/read/app1", "{}", parseInt(1, 10), true)
+			}
+		</script>
+	</head>
+	<body>
+		<!--顶部标题-->
+		<div class="header" id="topbar">
+			<div class="center" onclick='newmqtt()'>
+				<span id="titleName">MQTT测试</span>
+			</div>
+			<!--<div class="left" tapmode="headerhover" onclick='openOtherWin("myself")'>
+			<img src="../image/smallicon-3.png" alt=""/>
+			</div>-->
+			<!-- onclick='openOtherWin("right")' -->
+			<div class="right" tapmode="headerhover" onclick="">
+				<img src="../image/smallicon-4.png" alt=""/>
+			</div>
+		</div>
+		<!--消息列表-->
+		<div class="micocontent" data-role="page" >
+			<div data-role="content"  class="row">
+				<ul id="messEdit" class="disc">
+					Message
+					<input type="button" onclick="publishmqtt()"  value="publish"/>
+					<input type="button" onclick="stopmqtt()" value="stop"/>
+					<div data-role="content">
+						<ul id="messEdits"></ul>
+					</div>
+				</ul>
+			</div>
+		</div>
+		<input type="hidden" id="devidtopic" value=""/>
+	</body>
+</html>

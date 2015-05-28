@@ -1,0 +1,247 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="copyright" content="www.apicloud.com" />
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<title>推荐</title>
+		<link rel="stylesheet" type="text/css" href="../css/api.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/header.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/jquery.mobile.min.css"/>
+		<script type="text/javascript" src="../script/jquery-2.1.3.js"></script>
+		<script type="text/javascript" src="../script/jquery.mobile-1.4.5.min.js"></script>
+		<script type="text/javascript" src="../script/av-0.5.0.min.js"></script>
+		<script type="text/javascript" src="../script/config.js"></script>
+		<script type="text/javascript" src="../script/api.js"></script>
+		<script type="text/javascript" src="../script/mico-bind-0.1.js"></script>
+		<script type="text/javascript" src="../script/micokitmanage.js"></script>
+		<script type="text/javascript" src="../script/mico-user-0.1.js"></script>
+		<script type="text/javascript" src="../script/usermanage.js"></script>
+		<script type="text/javascript" src="../script/msgdic.js"></script>
+		<style>
+			.ui-body-f {
+				background-color: #106EB7;
+			}
+			.ui-focus {
+				-moz-box-shadow: none !important;
+				-webkit-box-shadow: none !important;
+				box-shadow: none !important;
+			}
+			.login {
+				background: url(../image/sekuai-3.png) 50% 0 no-repeat;
+				background-size: cover;
+			}
+			.register {
+				background: url(../image/sekuai-3.png) 50% 0 no-repeat;
+				background-size: cover;
+			}
+			.nextstep {
+				background: url(../image/sekuai-3.png) 50% 0 no-repeat;
+				background-size: cover;
+			}
+			.logo {
+				padding-top: 20%;
+				padding-bottom: 10px;
+				height: 100px;
+			}
+			.logo img {
+				height: 108px;
+				width: 118px;
+			}
+			.content {
+				margin: 21px 30px 0px 30px;
+				padding: 21px 19px;
+				background-color: #FFFFFF;
+				border-radius: 5px;
+			}
+			input {
+				height: 30px;
+				/*padding-left: 10px;*/
+				width: 100%;
+				/*border: 1px solid #FFFFFF;*/
+			}
+			.phone {
+				border-bottom: 1px solid #CCCCCC;
+				/*border-radius: 3px;*/
+			}
+			.psw {
+				border-bottom: 1px solid #CCCCCC;
+				/*border-radius: 3px;*/
+				margin-top: 16px;
+			}
+			.verify {
+				border-bottom: 1px solid #CCCCCC;
+				/*border-radius: 3px;*/
+				/*width: 60%;*/
+				margin-top: 16px;
+			}
+			.subbutton {
+				margin-top: 30px;
+				text-align: center;
+				background-image: url(../image/sekuai-Log-In.png);
+				/*background-color: #106eb7;*/
+				border-radius: 3px;
+			}
+			.subbutton span a {
+				height: 35px;
+				line-height: 35px;
+				color: #FFFFFF;
+			}
+			.forgotpsw {
+				text-align: right;
+			}
+			.forgotpsw a {
+				color: #b5b4b5;
+				font-size: 12px;
+				font-family: Arial;
+				margin-top: 3px;
+			}
+			.toregistcls {
+				margin: 39px 30px 0px 30px;
+				padding: 0px 19px;
+			}
+			.toregistbtn {
+				height: 35px;
+				line-height: 35px;
+				border: 1px solid #FEFEFE;
+				text-align: center;
+				border-radius: 3px;
+			}
+			.toregistbtn span a {
+				color: #FEFEFE;
+			}
+			.registcls {
+				margin: 39px 30px 0px 30px;
+				padding: 0px 19px;
+			}
+			.registbtn {
+				height: 35px;
+				line-height: 35px;
+				border: 1px solid #FEFEFE;
+				text-align: center;
+				border-radius: 3px;
+			}
+			.registbtn span a {
+				color: #FEFEFE;
+			}
+			.ui-block-b {
+				line-height: 30px;
+				float: right;
+				background: #0088CC;
+				border-radius: 5px;
+				text-align: center;
+			}
+			.ui-block-b span {
+				color: #FFFFFF;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="login" data-role="page" data-theme="f" id="loginpage">
+			<div class="logo" align="center">
+				<img src="../image/logo.png" />
+			</div>
+			<div class="content">
+				<div class="phone">
+					<input type="number" data-theme="f" data-role="none" placeholder="Phone Number" id="login_phone"/>
+				</div>
+				<div class="psw">
+					<input type="password" data-theme="f" data-role="none" placeholder="Password" id="login_psw"/>
+				</div>
+				<div class="subbutton" id="loginbtn">
+					<span><a href="#">Log In</a></span>
+				</div>
+				<div class="forgotpsw">
+					<a href="#registerpage" data-transition="none"  onclick="changpswtag('0')">Forgot Password?</a>
+				</div>
+			</div>
+			<div class="toregistcls">
+				<div class="toregistbtn">
+					<span ><a href="#registerpage" data-transition="none" onclick="changpswtag('1')">Create Account</a></span>
+				</div>
+			</div>
+		</div>
+		<div class="register" data-role="page" data-theme="f" id="registerpage">
+			<div class="logo" align="center">
+				<img src="../image/logo.png" />
+			</div>
+			<div class="content">
+				<div class="phone">
+					<input type="number" data-theme="f" data-role="none" placeholder="Phone Number" id="register_phone"/>
+				</div>
+				<div class="verify">
+					<div class="ui-grid-b">
+						<div class="ui-block-a">
+							<input type="number" data-theme="f" data-role="none" placeholder="V Code" id="register_code"/>
+						</div>
+						<div class="ui-block-b" id="getverifyCode">
+							<span>Send</span>
+						</div>
+					</div>
+				</div>
+				<div class="subbutton" id="nextstep">
+					<span><a href="#" data-transition="none">Next</a></span>
+				</div>
+				<div class="forgotpsw">
+					&nbsp; <!-- forgot password? -->
+				</div>
+			</div>
+			<div class="registcls">
+				<div class="registbtn">
+					<span><a href="#loginpage" data-transition="none">Return to Login</a></span>
+				</div>
+			</div>
+		</div>
+		<div class="nextstep" data-role="page" data-theme="f" id="nextsteppage">
+			<div class="logo" align="center">
+				<img src="../image/logo.png" />
+			</div>
+			<div class="content">
+				<div class="phone">
+					<input type="password" data-theme="f" data-role="none" placeholder="Password" id="nextstep_psw"/>
+				</div>
+				<div class="psw">
+					<input type="password" data-theme="f" data-role="none" placeholder="Password Confirmation" id="nextstep_ckpsw"/>
+				</div>
+				<div class="subbutton" id="finishregister">
+					<span><a href="#">Set and Login In</a></span>
+				</div>
+				<div class="forgotpsw">
+					&nbsp;
+					<input id="pswtag" type="hidden" value="0" />
+				</div>
+			</div>
+			<!-- <div class="toregistcls">
+			<div class="toregistbtn">
+			<span ><a href="#registerpage" data-transition="none">Create Account</a></span>
+			</div>
+			</div> -->
+		</div>
+	</body>
+	<script type="text/javascript">
+		var strDMlogin;
+		apiready = function() {
+			api.removeLaunchView();
+			var header = $api.byId('topbar');
+			$api.fixIos7Bar(header);
+			strDMlogin = api.systemType;
+			var hg = ($(window).height() - $('.content').outerHeight()) / 2;
+			// alert(hg);
+			$('.content').css({
+				// position : 'absolute',
+				top : hg
+			});
+			api.addEventListener({
+				name : "keyback"
+			}, function(ret, err) {
+				//当点击确定时 返回 true
+				closeApp();
+			});
+		};
+		function changpswtag(tag) {
+			// alert(tag);
+			var header = $api.byId('pswtag');
+			$api.val(header, tag);
+		}
+	</script>
+</html>

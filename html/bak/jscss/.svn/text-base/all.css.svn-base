@@ -1,0 +1,8 @@
+@import url("api.css");
+@import url("header.css");
+@import url("jquery.mobile.min.css");
+
+/*以下是原生的引用方法
+<link rel="stylesheet" type="text/css" href="../css/api.css"/>
+<link rel="stylesheet" type="text/css" href="../css/common.css"/>
+<link rel="stylesheet" type="text/css" href="../css/jquery.mobile.min.css"/>*/

@@ -1,0 +1,93 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,initial-scale=1.0,width=device-width"/>
+		<title>APP</title>
+		<link rel="stylesheet" type="text/css" href="../css/api.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/header.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/popup.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/jquery.mobile.min.css"/>
+		<script type="text/javascript" src="../script/jquery-2.1.3.js"></script>
+		<script type="text/javascript" src="../script/jquery.mobile-1.4.5.min.js"></script>
+		<script type="text/javascript" src="../script/av-0.5.0.min.js"></script>
+		<script type="text/javascript" src="../script/config.js"></script>
+		<script type="text/javascript" src="../script/api.js"></script>
+		<script type="text/javascript" src="../script/mico-bind-0.1.js"></script>
+		<script type="text/javascript" src="../script/mico-user-0.1.js"></script>
+		<script type="text/javascript" src="../script/usermanage.js"></script>
+		<script type="text/javascript" src="../script/micokitmanage.js"></script>
+		<style>
+			.micocontent {
+				margin-top:45px;
+				background-color:#F0F0F0;
+				text-shadow:none;
+			}
+			.loadingcontent {
+				margin-top:45px;
+				display:table;
+				height:80%;
+			}
+			.ui-body-b {
+				/*background-color:#106EB7;*/
+				opacity:0.5;/*其他，透明度50%*/
+			}
+		</style>
+	</head>
+	<body>
+		<div class="header" id="topbar">
+			<div class="center" onclick='getjson()'>
+				<span id="titleName">MicoKit</span>
+			</div>
+			<div class="left" tapmode="headerhover" onclick='checkpage()'>
+				<img id="headerleft" src="../image/smallicon-3.png" alt=""/>
+			</div>
+			<!-- onclick='openOtherWin("right")' -->
+			<div class="right" tapmode="headerhover" id="cloudtest1">
+				<img id="headerright" src="../image/smallicon-4.png" alt=""/>
+			</div>
+		</div>
+		<!--设备详情-->
+		<div class="micocontent" data-role="page" id="homePage">
+			<div data-role="content" align="center">
+				<p>
+					<a href="#popupNYC"  data-rel="popup" data-position-to="window" data-transition="fade">loading...</a>
+				</p>
+			</div>
+			<div data-role="popup" id="popupNYC" data-overlay-theme="b" data-theme="b" data-corners="false">
+				<div id="wrapper" class="wrapper">
+					<div id="up"></div>
+					<div id="mid"></div>
+					<div id="down"></div>
+				</div>
+			</div>
+		</div>
+		<!--loading-->
+		<!--<div class="loadingcontent" data-role="page" onclick="zhuan()" id="popupNYC">
+		</div>-->
+		<!--<a href="#popupNYC" data-rel="popup" data-position-to="window" data-transition="fade"><img class="popphoto" src="../_assets/img/newyork.jpg" alt="New York, USA" style="width:30%"></a>-->
+	</body>
+	<script type="text/javascript">
+		var chatobj;
+		apiready = function() {
+			var header = $api.byId('topbar');
+			$api.fixIos7Bar(header);
+			getjson();
+		};
+		function getjson() {
+			var jsstr = {
+				"13" : "hello json"
+			};
+			alert(jsstr);
+		}
+
+		function zhuan() {
+			self.setInterval("zhuans()", 2 * 1000);
+		}
+
+		function zhuans() {
+			$("#zhuanimg").css("transform", "");
+			$("#zhuanimg").css("transform", "rotate(360deg)");
+		}
+	</script>
+</html>

@@ -1,0 +1,133 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<title>Hello APP</title>
+		<link type="text/css" rel="stylesheet" href="../css/all.css"/>
+		<script type="text/javascript" src="../script/all.js"></script>
+		<style>
+			html, body {
+				height: 100%;
+				background-color: #eee;
+			}
+			.loginbg {
+				width: 100%;
+			}
+			/* 登陆样式 */
+			.loginbox {
+				background-color: #fff;
+				position: relative;
+				height: 60px;
+				text-align: center;
+			}
+			.loginbox .avatar {
+				position: absolute;
+				left: 20px;
+				top: -20px;
+				border: 1px solid #e0e0e0;
+				background: #fff;
+				border-radius: 3px;
+				width: 60px;
+				height: 60px;
+			}
+			.loginbox .avatar img {
+				width: 59px;
+				height: 59px;
+			}
+			.loginbox .shelf {
+				margin-left: 10px;
+			}
+			.loginbox .shelf .shelf01 {
+				padding-top: 5px;
+			}
+			.loginbox .shelf .shelf02 {
+				margin-top: 5px;
+				color: #0088cc;
+				font-size: 12px;
+			}
+			/* 用户item */
+			.useritem {
+				background-color: #fff;
+				margin: 10px;
+				border: 1px solid #d2d2d2;
+			}
+			.useritem  div {
+				height: 50px;
+				line-height: 50px;
+				padding-left: 15px;
+			}
+			/*退出登录*/
+			.logout {
+				background-color: #c53129;
+				margin: 10px;
+				/*border: 1px solid #c53129;*/
+				border-radius: 5px;
+			}
+			.logout  div {
+				height: 40px;
+				line-height: 40px;
+				text-align: center;
+				font-size: 18px;
+				color: #FFFFFF;
+				/*font-weight: bold;*/
+				/*				font-family: "微软雅黑";*/
+				/*padding-left: 15px;*/
+			}
+			.useritem  div:first-child {
+				border-bottom: 1px solid #d2d2d2;
+			}
+			/* 悬浮样式 */
+			.itemhover {
+				background-color: #eee;
+			}
+			.headerhover {
+				background-color: #36A8DC;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="header" id="topbar">
+			<div class="left" tapmode="headerhover" onclick="goback()">
+				<img src="../image/leftarrow.png" alt="" class="logoleft">
+				<span class="title">MICOBIND</span>
+			</div>
+		</div>
+		<div class="content">
+			<img src="../image/uer_center_header_bg.png" alt="" class="loginbg">
+			<div class="loginbox">
+				<div class="avatar"><img src="../image/myicon.jpg" alt="">
+				</div>
+				<div class="shelf" tapmode="" onclick="openOtherWin('nickname')">
+					<div class="shelf01" id="showname">
+						登陆/注册
+					</div>
+				</div>
+			</div>
+			<div class="useritem">
+				<div class="shelf01" tapmode="itemhover" onclick="openOtherWin('managedev')">
+					管理设备
+				</div>
+				<div class="shelf02" tapmode="itemhover" onclick="openOtherWin('resetpsw')">
+					修改密码
+				</div>
+			</div>
+			<div class="logout">
+				<!--onclick="openOtherWin('login')"-->
+				<div class="logouttxt" tapmode="itemhover" id="logout" >
+					退出登录
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript">
+
+		apiready = function() {
+			var header = $api.byId('topbar');
+			$api.fixIos7Bar(header);
+			var showname = $api.byId('showname');
+			$api.text(showname, getNickName());
+		};
+	</script>
+</html>

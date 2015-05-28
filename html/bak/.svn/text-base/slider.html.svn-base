@@ -1,0 +1,224 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,initial-scale=1.0,width=device-width"/>
+		<title>APP</title>
+		<link rel="stylesheet" type="text/css" href="../css/api.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/header.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/jquery.mobile.min.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/ionic.min.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/dragdealer.css"/>
+		<script type="text/javascript" src="../script/jquery-2.1.3.js"></script>
+		<script type="text/javascript" src="../script/jquery.mobile-1.4.5.min.js"></script>
+		<script type="text/javascript" src="../script/av-0.5.0.min.js"></script>
+		<script type="text/javascript" src="../script/config.js"></script>
+		<script type="text/javascript" src="../script/api.js"></script>
+		<script type="text/javascript" src="../script/mico-bind-0.1.js"></script>
+		<script type="text/javascript" src="../script/mico-user-0.1.js"></script>
+		<script type="text/javascript" src="../script/usermanage.js"></script>
+		<script type="text/javascript" src="../script/micokitmanage.js"></script>
+		<script type="text/javascript" src="../script/mqttws31.js"></script>
+		<script type="text/javascript" src="../script/wsclient.js"></script>
+		<script type="text/javascript" src="../script/devdic.js"></script>
+		<script type="text/javascript" src="../script/ionic.bundle.min.js"></script>
+		<script type="text/javascript" src="../script/zepto.min.js"></script>
+		<script type="text/javascript" src="../script/dragdealer.js"></script>
+		<script type="text/javascript" src="../script/demos.js"></script>
+		<style>
+			.micocontent {
+				margin-top: 45px;
+				background-color: #F0F0F0;
+				text-shadow: none;
+			}
+			.devctrlrow {
+				display: table;
+				width: 100%;
+				/*height: 140px;*/
+			}
+			.devctrlrow ul {
+				/*margin-left: 15px;*/
+			}
+			.devctrlrow ul li {
+				border-bottom: 1px #CCCCCC solid;
+				display: block;
+			}
+			.devctrlrow ul li a {
+				/*margin-left: 15px;*/
+			}
+			.devctrlrow ul li img {
+				margin-left: 15px;
+			}
+			.devctrlrow .devinfocls {
+				height: 72px;
+				line-height: 72px;
+				vertical-align: middle;
+			}
+			.devctrlrow .devinfocls img {
+				vertical-align: middle;
+			}
+			.devctrlrow .devinfocls span {
+				margin-left: 15px;
+				color: #595757;
+				font-size: 15px;
+				font-family: Arial;
+			}
+			.devctrlrow .devinfocls .rightarr {
+				height: 26px;
+				width: 15px;
+				position: absolute;
+				right: 15px;
+				margin-top: 25px;
+			}
+			.devctrlrow .devinfocls .devdetail {
+				margin-right: 15px;
+				float: right;
+				font-size: 17px;
+				color: #acacad;
+			}
+			.devinfocls img {
+				height: 40px;
+				width: 40px;
+			}
+			.devinfotitle {
+				height: 36px;
+				line-height: 36px;
+				background-color: #eae9e9;
+				border-bottom: 1px #CCCCCC solid;
+			}
+			.devinfotitle span {
+				margin-left: 15px;
+				color: #221814;
+				font-size: 13px;
+				font-family: Arial;
+			}
+			.canvascls {
+				margin-top: 18px;
+			}
+			#motorbtn {
+				height: 25px;
+				width: 49px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="header" id="topbar">
+			<div class="center" onclick="checkpage()">
+				<span id="titleName">MicoKit</span>
+			</div>
+			<div class="left" tapmode="headerhover">
+				<img id="headerleft" src="../image/smallicon-3.png" alt=""/>
+			</div>
+			<!-- onclick='openOtherWin("right")' -->
+			<div class="right" tapmode="headerhover" id="cloudtest1">
+				<img id="headerright" src="../image/smallicon-4.png" alt=""/>
+			</div>
+		</div>
+		<!--设备详情-->
+		<div class="micocontent" data-role="page" id="deviceinfo">
+			<div class="devctrlrow">
+				<ul>
+					<li id="chatliid" class="devctrlrow devinfocls">
+						<a href="#" id="toUARTMSG"><img src="../image/icon4.png"/><span>Uart</span><img class="rightarr" src="../image/rightarr.png"/></a>
+					</li>
+					<li id="rgbliid" class="devctrlrow devinfocls">
+						<a href="#" id="torgbctrl"><img src="../image/icon5.png"/><span>RGB</span><img class="rightarr" src="../image/rightarr.png"/></a>
+					</li>
+				</ul>
+			</div>
+			<div class="devctrlrow">
+				<div class="devinfotitle" id="devdataid">
+					<span>Device Data</span>
+				</div>
+				<ul>
+					<li id="adcclsid" class="devctrlrow devinfocls">
+						<img src="../image/adc.png"/>
+						<span>ADC</span>
+						<div class="devdetail" id="adcid">
+							NaN
+						</div>
+					</li>
+					<li id="ht_sensorclsid" class="devctrlrow devinfocls">
+						<img src="../image/icon6.png"/>
+						<span>Humiture</span>
+						<div class="devdetail" id="ht_sensorid">
+							1987
+						</div>
+					</li>
+					<!--<li id="pro_sensorclsid" class="devctrlrow devinfocls">
+					<img src="../image/icon10.png"/>
+					<span>Proximity</span>
+					<div class="devdetail" id="pro_sensorid">
+					NaN
+					</div>
+					</li>
+					<li id="atmo_sensorclsid" class="devctrlrow devinfocls">
+					<img src="../image/icon7.png"/>
+					<span>Atmosphere</span>
+					<div class="devdetail" id="atmo_sensorid">
+					NaN
+					</div>
+					</li>
+					<li id="montion_sensorclsid" class="devctrlrow devinfocls">
+					<img src="../image/icon8.png"/>
+					<span>Motion</span>
+					<div class="devdetail" id="montion_sensorid">
+					NaN
+					</div>
+					</li>-->
+					<li id="motor_sensorclsid" class="devctrlrow devinfocls">
+						<img src="../image/icon8.png"/>
+						<span>Motor</span>
+						<img class="rightarr" id="motorbtn" src="../image/smallicon-8kaiguan.png"/>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<!--RGB控制-->
+		<div class="micocontent" data-role="page" id="rgbctrl">
+			<div data-role="content" class="canvascls" align="center">
+				<canvas id="colorPicker1"></canvas>
+				<br/>
+				<span class="colorspancls">Brightness</span>
+				<div id="brightslider" class="dragdealer">
+					<div class="handle red-bar">
+						<span class="brightval" id="brightspanid"></span>
+					</div>
+				</div>
+				<span class="colorspancls">Saturation</span>
+				<div id="satslider" class="dragdealer">
+					<div class="handle red-bar">
+						<span class="satval" id="satspanid"></span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--隐藏标识项-->
+		<input type="hidden" id="devidtopic" value=""/>
+	</body>
+	<script type="text/javascript">
+		apiready = function() {
+			var header = $api.byId('topbar');
+			$api.fixIos7Bar(header);
+		};
+		function checkpage() {
+			var sliderMask = new Dragdealer('brightslider', {
+				animationCallback : function(x, y) {
+					$('#spanid').val(Math.round(x * 100));
+				}
+			});
+			sliderMask.setValue(0.3, 0, true);
+			//			alert($('#spanid').val());
+		}
+
+
+		$("#motorbtn").click(function() {
+			var mtbtn = $("#motorbtn");
+			if (mtbtn.attr("src") == "../image/smallicon-9kaiguan.png") {
+				mtbtn.attr("src", "../image/smallicon-8kaiguan.png");
+			} else {
+				mtbtn.attr("src", "../image/smallicon-9kaiguan.png");
+			}
+		});
+	</script>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,initial-scale=1.0,width=device-width"/>
+		<title>APP</title>
+		<link rel="stylesheet" type="text/css" href="../css/api.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/header.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/jquery.mobile.min.css"/>
+		<script type="text/javascript" src="../script/jquery-2.1.3.js"></script>
+		<script type="text/javascript" src="../script/jquery.mobile-1.4.5.min.js"></script>
+		<script type="text/javascript" src="../script/av-0.5.0.min.js"></script>
+		<script type="text/javascript" src="../script/config.js"></script>
+		<script type="text/javascript" src="../script/api.js"></script>
+		<script type="text/javascript" src="../script/mico-bind-0.1.js"></script>
+		<script type="text/javascript" src="../script/mico-user-0.1.js"></script>
+		<script type="text/javascript" src="../script/usermanage.js"></script>
+		<script type="text/javascript" src="../script/micokitmanage.js"></script>
+		<style>
+			.micocontent {
+				margin-top: 45px;
+				background-color: #F0F0F0;
+				text-shadow: none;
+			}
+			.fdcontent {
+				margin: 21px 30px 0px 30px;
+				padding: 21px 19px;
+				background-color: #FFFFFF;
+				border-radius: 5px;
+			}
+			.fdcontentcls {
+				border: 1px dashed #0088CC;
+				font-size: 14px;
+				color: #31304A;
+			}
+			.subbutton {
+				height: 30px;
+				margin-top: 30px;
+				text-align: center;
+				background-image: url(../image/sekuai-Log-In.png);
+				border-radius: 3px;
+				line-height: 30px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="header" id="topbar">
+			<div class="center" onclick='savetolean()'>
+				<span id="titleName">MicoKit</span>
+			</div>
+			<div class="left" tapmode="headerhover">
+				<img id="headerleft" src="../image/smallicon-3.png" alt=""/>
+			</div>
+			<!-- onclick='openOtherWin("right")' -->
+			<div class="right" tapmode="headerhover" id="cloudtest1">
+				<img id="headerright" src="../image/smallicon-4.png" alt=""/>
+			</div>
+		</div>
+		<!--反馈信息-->
+		<div class="micocontent" data-role="page" data-theme="f" id="feedbackpage">
+			<div class="fdcontent">
+				<textarea rows="10" id="fdcontent" class="fdcontentcls">
+				</textarea>
+				<div class="subbutton">
+					<span id="savefd"><a href="#">Save</a></span>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		var chatobj;
+		apiready = function() {
+			var header = $api.byId('topbar');
+			$api.fixIos7Bar(header);
+			//			getjson();
+		};
+		function getjson() {
+			var jsstr = {
+				"13" : "hello json"
+			};
+			alert(jsstr);
+		}
+
+		function savetolean() {
+			//AV.Object
+			var fd = AV.Object.new('feedback');
+			fd.set("appname", "micokit");
+			fd.set("phone", "13122000202");
+			fd.set("fdcontent", "垃圾软件啊");
+			fd.save(null, {
+				success : function(ret) {
+					// Execute any logic that should take place after the object is saved.
+					alert('New object created with objectId: ' + fd.id);
+				},
+				error : function(ret, err) {
+					// Execute any logic that should take place if the save fails.
+					// error is a AV.Error with an error code and description.
+					alert('Failed to create new object, with error code: ' + err.message);
+				}
+			});
+		}
+	</script>
+</html>

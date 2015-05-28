@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="../css/api.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/header.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/selflist.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/jquery.mobile.min.css"/>
+		<!--<link rel="stylesheet" type="text/css" href="../css/ionic.min.css"/>-->
+		<link rel="stylesheet" type="text/css" href="../css/dragdealer.css"/>
+		<script type="text/javascript" src="../script/jquery-2.1.3.js"></script>
+		<script type="text/javascript" src="../script/jquery.mobile-1.4.5.min.js"></script>
+		<script type="text/javascript" src="../script/av-0.5.0.min.js"></script>
+		<script type="text/javascript" src="../script/config.js"></script>
+		<script type="text/javascript" src="../script/api.js"></script>
+		<script type="text/javascript" src="../script/mico-bind-0.1.js"></script>
+		<script type="text/javascript" src="../script/mico-user-0.1.js"></script>
+		<script type="text/javascript" src="../script/usermanage.js"></script>
+		<script type="text/javascript" src="../script/micokitmanage.js"></script>
+		<!--<script type="text/javascript" src="../script/mqttws31.js"></script>
+		<script type="text/javascript" src="../script/wsclient.js"></script>-->
+		<script type="text/javascript" src="../script/mqttsev.js"></script>
+		<script type="text/javascript" src="../script/devdic.js"></script>
+		<script type="text/javascript" src="../script/ionic.bundle.min.js"></script>
+		<script type="text/javascript" src="../script/zepto.min.js"></script>
+		<script type="text/javascript" src="../script/dragdealer.js"></script>
+		<script type="text/javascript" src="../script/jquery.md5.js"></script>
+	</head>
+	<body>
+		<header id="header" class="header">
+			<ul class="headerul">
+				<li class="left">
+					<img id="headerleft" src="../image/smallicon-3.png" alt=""/>
+				</li>
+				<li class="center">
+					<span id="titleName">MicoKit</span>
+				</li>
+				<li class="right">
+					<img id="headerright" src="../image/smallicon-4.png" alt=""/>
+				</li>
+			</ul>
+		</header>
+		<script src="../script/api.js"></script>
+		<script>
+			function closeWin() {
+				api.closeWin({
+					name : 'search',
+					animation : {
+						type : "reveal",
+						subType : "from_top",
+						duration : 300
+					}
+				});
+			}
+
+			apiready = function() {
+				var header = $api.byId('header');
+				(function(el) {
+					var strDM = api.systemType;
+					if (strDM == 'ios') {
+						var strSV = api.systemVersion;
+						var numSV = parseInt(strSV, 10);
+						var fullScreen = api.fullScreen;
+						var iOS7StatusBarAppearance = api.iOS7StatusBarAppearance;
+						if (numSV >= 7 && !fullScreen && iOS7StatusBarAppearance) {
+							el.style.paddingTop = '20px';
+							/* 搜索图标单独处理. */
+							//						$api.byId('search-advertise').style.top = "35px";
+						}
+					}
+				})(header);
+			};
+		</script>
+	</body>
+</html>

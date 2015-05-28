@@ -1,0 +1,195 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,initial-scale=1.0,width=device-width"/>
+		<title>APP</title>
+		<link rel="stylesheet" type="text/css" href="../css/api.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/header.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/jquery.mobile.min.css"/>
+		<script type="text/javascript" src="../script/jquery-2.1.3.js"></script>
+		<script type="text/javascript" src="../script/jquery.mobile-1.4.5.min.js"></script>
+		<script type="text/javascript" src="../script/av-0.5.0.min.js"></script>
+		<script type="text/javascript" src="../script/config.js"></script>
+		<script type="text/javascript" src="../script/api.js"></script>
+		<script type="text/javascript" src="../script/mico-bind-0.1.js"></script>
+		<script type="text/javascript" src="../script/mico-user-0.1.js"></script>
+		<script type="text/javascript" src="../script/usermanage.js"></script>
+		<script type="text/javascript" src="../script/micokitmanage.js"></script>
+		<style>
+			.micocontent {
+				margin-top: 45px;
+				background-color: #F0F0F0;
+				text-shadow: none;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="header" id="topbar">
+			<div class="center" onclick='websocketTest()'>
+				<span id="titleName">MicoKit</span>
+			</div>
+			<div class="left" tapmode="headerhover" onclick='publishTest()'>
+				<img id="headerleft" src="../image/smallicon-3.png" alt=""/>
+			</div>
+			<!-- onclick='openOtherWin("right")' -->
+			<div class="right" tapmode="headerhover" onclick="hidPro()">
+				<img id="headerright" src="../image/smallicon-4.png" alt=""/>
+			</div>
+		</div>
+		<!--设备详情-->
+		<div class="micocontent" data-role="page" id="homePage">
+			<div data-role="content" align="center">
+				<p>
+					<a href="#aboutPage" data-transition="none">loading...</a>
+				</p>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		var PAGETAG;
+		apiready = function() {
+			var header = $api.byId('topbar');
+			$api.fixIos7Bar(header);
+			//			getjson();
+			//			showProgress();
+			api.addEventListener({
+				name : "keyback"
+			}, function(ret, err) {
+				checkpage();
+			});
+		};
+		function checkpage() {
+			if (PAGETAG == 0) {
+				//				infoToList();
+				apiToast("不可以", 2000);
+			}
+		}
+
+		function hidPro() {
+			api.hideProgress();
+		}
+
+		function showProgress() {
+			PAGETAG = 0;
+			api.showProgress({
+				style : 'default',
+				animationType : 'zoom',
+				title : '先喝杯茶...',
+				text : '此过程大约20秒',
+				modal : true
+			});
+		}
+
+		//测试jmdns
+		function getdevjson() {
+			alert("getdevjson");
+			var micoJmdns = api.require("micoJmdns");
+			var bonjourHead = "_easylink._tcp.local.";
+			// var bonjourHead = "_ipp._tcp.";
+			micoJmdns.getMdns({
+				bonjourHead : bonjourHead
+			}, function(ret, err) {
+				if (ret.devjson) {
+					// api.alert({
+					alert(JSON.stringify(ret.devjson));
+					// });
+				} else {
+					api.alert({
+						msg : err.msg
+					});
+				}
+			});
+		}
+
+		//测试新的mqtt
+		function testMqtt() {
+			// $.ajax({
+			// url : "http://api.easylink.io/mqtt/subscribe/",
+			// type : 'GET',
+			// data : JSON.stringify({
+			// topic : "d64f517c/aca213caec5c/#"
+			// }),
+			// headers : {
+			// // "Content-Type" : "application/json"
+			// },
+			// success : function(result) {
+			// alert('Hello = ' + JSON.stringify(result));
+			// // var devid = result.device_id;
+			// // alert('devid = ' + devid);
+			// },
+			// error : function(err) {
+			// // var obj = err.responseJSON;
+			// // var rt = JSON.stringify(obj);
+			// // alert("message = " + obj.error.message);
+			// alert('errw = ' + JSON.stringify(err));
+			// }
+			// });
+			var pos = 0;
+			alert("subscribe");
+			var xhr = new XMLHttpRequest();
+			var topic = encodeURIComponent("d64f517c/aca213caec5c/#");
+			xhr.open("GET", "http://api.easylink.io/mqtt/subscribe/?topic=" + topic, true);
+			xhr.onprogress = function() {
+				//				var data = xhr.responseText;
+				var data = xhr.responseText.substr(pos).split('\r\n', 2);
+				pos = xhr.responseText.length;
+				console.log("PROGRESS:", data);
+			};
+			xhr.send();
+		}
+
+		function publishTest() {
+			var pos = 0;
+			alert("publishTest");
+			var xhr = new XMLHttpRequest();
+			var topic = encodeURIComponent("d64f517c/aca213caec5c/in/read/app1");
+			var payload = encodeURIComponent('{"5":false,"6":0,"7":0,"8":0}');
+			xhr.open("GET", "http://api.easylink.io/mqtt/publish/?topic=" + topic + "&payload=" + payload, true);
+			xhr.onprogress = function() {
+				//				var data = xhr.responseText;
+				var data = xhr.responseText.substr(pos).split('\r\n', 2);
+				pos = xhr.responseText.length;
+				console.log("PROGRESS:", data);
+			};
+			xhr.send();
+		}
+
+		function websocketTest() {
+			var socketManager = api.require('socketManager');
+			socketManager.createSocket({
+				host : 'api.easylink.io',
+				port : 1983
+			}, function(ret, err) {
+				alert(JSON.stringify(ret));
+				if (ret) {
+					var state = ret.state;
+					var sid = ret.sid
+					var data = ret.data;
+					var stateStr = "";
+					if (101 === state) {
+						stateStr = "创建成功";
+					} else if (102 === state) {
+						stateStr = "连接成功";
+					} else if (103 === state) {
+						stateStr = "收到消息";
+					} else if (201 === state) {
+						stateStr = "创建失败";
+					} else if (202 === state) {
+						stateStr = "连接失败";
+					} else if (203 === state) {
+						stateStr = "异常断开";
+					} else if (204 === state) {
+						stateStr = "正常断开";
+					} else if (205 === state) {
+						stateStr = "发生未知错误";
+					}
+					var msg = 'sid: ' + sid + '\nstate: ' + stateStr + '\ndata: ' + ( data ? data : '');
+					api.alert({
+						msg : msg
+					});
+				}
+			});
+		}
+	</script>
+</html>

@@ -1,0 +1,416 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,initial-scale=1.0,width=device-width"/>
+		<title>APP</title>
+		<link rel="stylesheet" type="text/css" href="../css/api.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/header.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/jquery.mobile.min.css"/>
+		<script type="text/javascript" src="../script/jquery-2.1.3.js"></script>
+		<script type="text/javascript" src="../script/jquery.mobile-1.4.5.min.js"></script>
+		<script type="text/javascript" src="../script/av-0.5.0.min.js"></script>
+		<script type="text/javascript" src="../script/config.js"></script>
+		<script type="text/javascript" src="../script/api.js"></script>
+		<script type="text/javascript" src="../script/mico-bind-0.1.js"></script>
+		<script type="text/javascript" src="../script/mico-user-0.1.js"></script>
+		<script type="text/javascript" src="../script/usermanage.js"></script>
+		<script type="text/javascript" src="../script/micokitmanage.js"></script>
+		<style>
+			.micocontent {
+				margin-top: 45px;
+				background-color: #F0F0F0;
+				text-shadow: none;
+			}
+			.ui-body-f {
+				background-color: #106EB7;
+			}
+			.ui-focus {
+				-moz-box-shadow: none !important;
+				-webkit-box-shadow: none !important;
+				box-shadow: none !important;
+			}
+			.login {
+				background: url(../image/sekuai-3.png) 50% 0 no-repeat;
+				background-size: cover;
+			}
+			.register {
+				background: url(../image/sekuai-3.png) 50% 0 no-repeat;
+				background-size: cover;
+			}
+			.nextstep {
+				background: url(../image/sekuai-3.png) 50% 0 no-repeat;
+				background-size: cover;
+			}
+			.logo {
+				padding-top: 20%;
+				padding-bottom: 10px;
+				height: 100px;
+			}
+			.logo img {
+				height: 108px;
+				width: 118px;
+			}
+			.content {
+				margin: 21px 30px 0px 30px;
+				padding: 21px 19px;
+				background-color: #FFFFFF;
+				border-radius: 5px;
+			}
+			input {
+				height: 30px;
+				/*padding-left: 10px;*/
+				width: 100%;
+				border: 1px solid #FFFFFF;
+			}
+			.phone {
+				border-bottom: 1px solid #CCCCCC;
+				/*border-radius: 3px;*/
+			}
+			.psw {
+				border-bottom: 1px solid #CCCCCC;
+				/*border-radius: 3px;*/
+				margin-top: 16px;
+			}
+			.verify {
+				border-bottom: 1px solid #CCCCCC;
+				/*border-radius: 3px;*/
+				/*width: 60%;*/
+				margin-top: 16px;
+			}
+			.subbutton {
+				margin-top: 30px;
+				text-align: center;
+				background-image: url(../image/sekuai-Log-In.png);
+				/*background-color: #106eb7;*/
+				border-radius: 3px;
+			}
+			.subbutton span a {
+				height: 35px;
+				line-height: 35px;
+				color: #FFFFFF;
+			}
+			.forgotpsw {
+				text-align: right;
+			}
+			.forgotpsw a {
+				color: #b5b4b5;
+				font-size: 12px;
+				font-family: Arial;
+				margin-top: 3px;
+			}
+			.toregistcls {
+				margin: 39px 30px 0px 30px;
+				padding: 0px 19px;
+			}
+			.toregistbtn {
+				height: 35px;
+				line-height: 35px;
+				border: 1px solid #FEFEFE;
+				text-align: center;
+				border-radius: 3px;
+			}
+			.toregistbtn span a {
+				color: #FEFEFE;
+			}
+			.registcls {
+				margin: 39px 30px 0px 30px;
+				padding: 0px 19px;
+			}
+			.registbtn {
+				height: 35px;
+				line-height: 35px;
+				border: 1px solid #FEFEFE;
+				text-align: center;
+				border-radius: 3px;
+			}
+			.registbtn span a {
+				color: #FEFEFE;
+			}
+			.ui-block-b {
+				line-height: 30px;
+				float: right;
+				background: #0088CC;
+				border-radius: 5px;
+				text-align: center;
+			}
+			.ui-block-b span {
+				color: #FFFFFF;
+			}
+			/*easylink部分*/
+			.micocontent {
+				margin-top: 45px;
+				background-color: #F0F0F0;
+				text-shadow: none;
+			}
+			.ui-body-f {
+				background-color: #106EB7;
+			}
+			.ui-focus {
+				-moz-box-shadow: none !important;
+				-webkit-box-shadow: none !important;
+				box-shadow: none !important;
+			}
+			.login {
+				background: url(../image/sekuai-3.png) 50% 0 no-repeat;
+				background-size: cover;
+			}
+			.register {
+				background: url(../image/sekuai-3.png) 50% 0 no-repeat;
+				background-size: cover;
+			}
+			.nextstep {
+				background: url(../image/sekuai-3.png) 50% 0 no-repeat;
+				background-size: cover;
+			}
+			.logo {
+				padding-top: 20%;
+				padding-bottom: 10px;
+				height: 100px;
+			}
+			.logo img {
+				height: 108px;
+				width: 118px;
+			}
+			.content {
+				margin: 21px 30px 0px 30px;
+				padding: 21px 19px;
+				background-color: #FFFFFF;
+				border-radius: 5px;
+			}
+			input {
+				height: 30px;
+				/*padding-left: 10px;*/
+				width: 100%;
+				border: 1px solid #FFFFFF;
+			}
+			.phone {
+				border-bottom: 1px solid #CCCCCC;
+				/*border-radius: 3px;*/
+			}
+			.psw {
+				border-bottom: 1px solid #CCCCCC;
+				/*border-radius: 3px;*/
+				margin-top: 16px;
+			}
+			.verify {
+				border-bottom: 1px solid #CCCCCC;
+				/*border-radius: 3px;*/
+				/*width: 60%;*/
+				margin-top: 16px;
+			}
+			.subbutton {
+				margin-top: 30px;
+				text-align: center;
+				background-image: url(../image/sekuai-Log-In.png);
+				/*background-color: #106eb7;*/
+				border-radius: 3px;
+			}
+			.subbutton span a {
+				height: 35px;
+				line-height: 35px;
+				color: #FFFFFF;
+			}
+			.forgotpsw {
+				text-align: right;
+			}
+			.forgotpsw a {
+				color: #b5b4b5;
+				font-size: 12px;
+				font-family: Arial;
+				margin-top: 3px;
+			}
+			.toregistcls {
+				margin: 39px 30px 0px 30px;
+				padding: 0px 19px;
+			}
+			.toregistbtn {
+				height: 35px;
+				line-height: 35px;
+				border: 1px solid #FEFEFE;
+				text-align: center;
+				border-radius: 3px;
+			}
+			.toregistbtn span a {
+				color: #FEFEFE;
+			}
+			.registcls {
+				margin: 39px 30px 0px 30px;
+				padding: 0px 19px;
+			}
+			.registbtn {
+				height: 35px;
+				line-height: 35px;
+				border: 1px solid #FEFEFE;
+				text-align: center;
+				border-radius: 3px;
+			}
+			.registbtn span a {
+				color: #FEFEFE;
+			}
+			.ui-block-b {
+				line-height: 30px;
+				float: right;
+				background: #0088CC;
+				border-radius: 5px;
+				text-align: center;
+			}
+			.ui-block-b span {
+				color: #FFFFFF;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="header" id="topbar">
+			<div class="center" onclick='getdevip()'>
+				<span id="titleName">MicoKit</span>
+			</div>
+			<div class="left" tapmode="headerhover">
+				<img id="headerleft" src="../image/smallicon-3.png" alt=""/>
+			</div>
+			<!-- onclick='openOtherWin("right")' -->
+			<div class="right" tapmode="headerhover" id="cloudtest1">
+				<img id="headerright" src="../image/smallicon-4.png" alt=""/>
+			</div>
+		</div>
+		<!--SSID配置-->
+		<div class="micocontent" data-role="page" id="ssidmanage">
+			<div class="content">
+				<div class="phone">
+					<input type="text" data-theme="f" data-role="none" placeholder="SSID" id="wifi_ssid"/>
+				</div>
+				<div class="psw">
+					<input type="password" data-theme="f" data-role="none" placeholder="Password" id="wifi_psw"/>
+				</div>
+				<div class="subbutton">
+					<span onclick="getdevip()"><a href="#">Search Device</a></span>
+				</div>
+			</div>
+		</div>
+		<!--EasyLink密码配置-->
+		<div class="micocontent" data-role="page" id="devmanage">
+			<div class="content">
+				<div class="phone">
+					<input type="text" data-theme="f" data-role="none" placeholder="Password" id="dev_psw"/>
+				</div>
+				<div class="psw">
+					<input type="password" data-theme="f" data-role="none" placeholder="Password Confirmation" id="dev_psw_conf"/>
+				</div>
+				<div class="subbutton">
+					<span onclick="ajaxgetdveid()"><a href="#">Save</a></span>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		//设备IP
+		var devip;
+		//去设备获取devid时候发的token
+		var dev_token = "11111111";
+		//去云端绑定设备时候发的用户token
+		var userToken = "a98deaf6-c51c-4d86-89fc-c2811b99a4a3";
+		//APP_ID
+		var APP_ID = "189cf0d5-4bd9-4d3f-a65d-342adbea735b";
+		apiready = function() {
+			var header = $api.byId('topbar');
+			$api.fixIos7Bar(header);
+			getWifiSsid();
+		};
+		function getWifiSsid() {
+			var wifissid = api.require('wifiSsid');
+			wifissid.getSsid(null, function(ret, err) {
+				if (ret.ssid) {
+					$("#wifi_ssid").val(ret.ssid);
+				} else {
+					api.alert({
+						msg : err.msg
+					});
+				}
+			});
+		}
+
+		function getdevip() {
+			alert("getdevip");
+			var devipme = api.require('micoBind');
+			var wifi_ssid = $("#wifi_ssid").val();
+			var wifi_psw = $("#wifi_psw").val();
+			devipme.getDevip({
+				wifi_ssid : wifi_ssid,
+				wifi_password : wifi_psw
+			}, function(ret, err) {
+				if (ret.devip) {
+					// api.alert({
+					// msg : '设备IP:' + ret.devip
+					// });
+					devip = ret.devip;
+					$.mobile.changePage("#devmanage", {
+						transition : "none"
+					});
+					// ajaxgetdveid();
+					// ajaxgetdveid(ret.devip);
+				} else {
+					api.alert({
+						msg : err.msg
+					});
+				}
+			});
+		}
+
+		function ajaxgetdveid() {
+			var ajaxurl = 'http://' + devip + ':8001/dev-activate';
+			var dev_psw = $("#dev_psw").val();
+			$.ajax({
+				url : ajaxurl,
+				type : 'POST',
+				data : JSON.stringify({
+					login_id : "admin",
+					dev_passwd : dev_psw,
+					user_token : dev_token
+				}),
+				headers : {
+					"Content-Type" : "application/json"
+				},
+				success : function(result) {
+					// alert('Hello = ' + JSON.stringify(result));
+					var devid = result.device_id;
+					alert('们的devid = ' + devid);
+					bindtocloud(devid);
+				},
+				error : function(err) {
+					// var obj = err.responseJSON;
+					// var rt = JSON.stringify(obj);
+					// alert("message = " + obj.error.message);
+					alert('errw = ' + JSON.stringify(err));
+				}
+			});
+		}
+
+		function bindtocloud(devid) {
+			$.ajax({
+				url : 'http://api.easylink.io/v1/key/authorize',
+				type : 'POST',
+				data : {
+					active_token : dev_token
+				},
+				// timeout : 1000,
+				headers : {
+					// "Content-Type" : "application/json",
+					"Authorization" : "token " + userToken,
+					"X-Application-Id" : APP_ID
+				},
+				success : function(result) {
+					alert('Hello = ' + JSON.stringify(result));
+					// response.success('Hello ' + result);
+					// var devid = result.device_id;
+					// bindtocloud(devid);
+				},
+				error : function(err) {
+					// var obj = err.responseJSON;
+					// var rt = JSON.stringify(obj);
+					// alert("message = " + obj.error.message);
+					alert('err = ' + JSON.stringify(err));
+				}
+			});
+		}
+	</script>
+</html>

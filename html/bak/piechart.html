@@ -1,0 +1,135 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,initial-scale=1.0,width=device-width"/>
+		<title>APP</title>
+		<link rel="stylesheet" type="text/css" href="../css/api.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/header.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/selflist.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/jquery.mobile.min.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/ionic.min.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/dragdealer.css"/>
+		<script type="text/javascript" src="../script/jquery-2.1.3.js"></script>
+		<script type="text/javascript" src="../script/jquery.mobile-1.4.5.min.js"></script>
+		<script type="text/javascript" src="../script/av-0.5.0.min.js"></script>
+		<script type="text/javascript" src="../script/config.js"></script>
+		<script type="text/javascript" src="../script/api.js"></script>
+		<script type="text/javascript" src="../script/mico-bind-0.1.js"></script>
+		<script type="text/javascript" src="../script/mico-user-0.1.js"></script>
+		<script type="text/javascript" src="../script/usermanage.js"></script>
+		<script type="text/javascript" src="../script/micokitmanage.js"></script>
+		<script type="text/javascript" src="../script/mqttsev.js"></script>
+		<script type="text/javascript" src="../script/devdic.js"></script>
+		<script type="text/javascript" src="../script/ionic.bundle.min.js"></script>
+		<script type="text/javascript" src="../script/zepto.min.js"></script>
+		<script type="text/javascript" src="../script/dragdealer.js"></script>
+		<script type="text/javascript" src="../script/jquery.md5.js"></script>
+		<style>
+			.micocontent {
+				margin-top: 45px;
+				background-color: #F0F0F0;
+				text-shadow: none;
+			}
+		</style>
+	</head>
+	<body>
+		<!--顶部标题-->
+		<div class="header" id="topbar">
+			<div class="center">
+				<span id="titleName">MicoKit</span>
+			</div>
+			<div class="left" tapmode="headerhover" onclick='checkpage()'>
+				<img id="headerleft" src="../image/smallicon-3.png" alt=""/>
+			</div>
+			<!-- onclick='openOtherWin("right")' -->
+			<div class="right" tapmode="headerhover" id="cloudtest1">
+				<img id="headerright" src="../image/smallicon-4.png" alt=""/>
+			</div>
+		</div>
+		<!--RGB控制-->
+		<div class="micocontent" data-role="page" id="rgbctrl">
+			<div class="onoffbtn">
+				<select id="rgbonoffbtn" data-role="slider" onchange="checkrgbbtn()">
+					<option>On</option>
+					<option>Off</option>
+				</select>
+			</div>
+			<div data-role="content" class="canvascls" align="center">
+				<canvas id="colorPicker1"></canvas>
+				<br/>
+				<span class="colorspancls">Brightness</span>
+				<div id="brightslider" class="dragdealer">
+					<div class="handle red-bar">
+						<span class="brightval" id="brightspanid"></span>
+					</div>
+				</div>
+				<span class="colorspancls">Saturation</span>
+				<div id="satslider" class="dragdealer">
+					<div class="handle red-bar">
+						<span class="satval" id="satspanid"></span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		apiready = function() {
+			var header = $api.byId('topbar');
+			$api.fixIos7Bar(header);
+		};
+		//亮度
+		var bsliderMask = new Dragdealer('brightslider', {
+			animationCallback : function(x, y) {
+				$('#brightspanid').val(Math.round(x * 100));
+			}
+		});
+		bsliderMask.setValue(0.3, 0, true);
+		//饱和度
+		var ssliderMask = new Dragdealer('satslider', {
+			animationCallback : function(x, y) {
+				$('#satspanid').val(Math.round(x * 100));
+			}
+		});
+		ssliderMask.setValue(0.4, 0, true);
+	</script>
+	<script type="text/javascript" src="../script/colorPicker.js"></script>
+	<script>
+		function cgsdddd() {
+			var ddd = $("#flip3").find("option:selected").text();
+			alert(ddd);
+		}
+
+		var access_token = 'faed6414-38af-4922-a743-42352e0ca2e2';
+		var device_id = 'd64f517c/aca213caec5c';
+		var alias = 'MicoKit3288';
+		var showName = alias ? alias : device_id;
+		//		$('#device_id').val(showName);
+		//		var width = (window.innerWidth < window.innerHeight ? window.innerWidth : window.innerHeight);
+		var width = 0.4 * document.body.clientHeight;
+		$('#colorPicker1').attr('width', width).attr('height', width);
+		var colorPicker = new colorPicker(document.getElementById('colorPicker1'), {
+			h : 5,
+			s : 5,
+			v : 0,
+			bgcolor : '#f0f0f0'
+		});
+		var lastcolor = '';
+		setInterval(function() {
+			var color = colorPicker.getColorHSV();
+			var color = [1, parseInt(color.h * 360), parseInt(color.s * 100), parseInt(color.v * 100)].join(',');
+			if (lastcolor != color) {
+				lastcolor = color;
+				//				alert(color);
+				//				$("#switch_button").prop("checked", true);
+				//				sendMsg(access_token, device_id, color);
+				/* $.ajax({
+				 type: 'GET',
+				 dataType: 'jsonp',
+				 url: 'http://api.easylink.io/device/in.js',
+				 data: {'access_token':access_token, 'device_id':device_id, 'msg': color}
+				 }); */
+			}
+		}, 500);
+	</script>
+</html>

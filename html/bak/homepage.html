@@ -1,0 +1,162 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,initial-scale=1.0,width=device-width"/>
+		<title>APP</title>
+		<link type="text/css" rel="stylesheet" href="../css/all.css"/>
+		<script type="text/javascript" src="../script/all.js"></script>
+		<style>
+			html {
+				height: 100%;
+			}
+			body {
+				background-color: #f0f0f0;
+				height: 100%;
+			}
+			.h10 {
+				height: 10px;
+			}
+			/* 条目总体样式 */
+			.item {
+				display: table;
+				height: 60px;
+				width: 100%;
+				border-bottom: 2px solid #FFFFFF;
+			}
+			.item .itemlogo, .item .itemshelf {
+				display: table-cell;
+				vertical-align: middle;
+			}
+			.item .itemlogo {
+				width: 60px;
+			}
+			.item .itemlogo img {
+				margin-left: 10px;
+				width: 30px;
+				height: 30px;
+			}
+			.item .itemshelf .shelfinfo01 {
+				font-size: 15px;
+				/*color: #3993cf;*/
+			}
+			/* 条目特例 */
+			.login {
+				height: 70px;
+				border-bottom: 2px solid #FFFFFF;
+			}
+			.login .itemlogo {
+				width: 80px;
+			}
+			.login .userlogo img {
+				width: 40px;
+				height: 40px;
+				/*圆角边框*/
+				border-radius: 5px;
+			}
+			.login .itemshelf .shelfinfo01 {
+				font-size: 20px;
+				/*color: #3993cf;*/
+			}
+			.login .itemshelf .shelfinfo02 {
+				font-size: 14px;
+				color: #A4A4A5;
+				margin-top: 5px;
+			}
+			/* 底部美食相机 */
+			.foodphone {
+				position: absolute;
+				bottom: 0;
+				border-bottom: 0;
+				border-top: 2px solid #FFFFFF;
+				height: 80px;
+			}
+			.foodphone .itemlogo {
+				width: 80px;
+			}
+			.foodphone .itemlogo img {
+				margin-left: 10px;
+				width: 60px;
+			}
+			/* 悬停样式 */
+			.itemhover {
+				background-color: #FFFFFF;
+			}
+		</style>
+	</head>
+	<body onload="getName()">
+		<div class="header1" id="topbar"  align="center">
+			<div class="left1" tapmode="headerhover" align="center">
+				<!--<img src="../image/leftarrow.png" alt="" class="logoleft">-->
+				<span class="title1">MICOBIND</span>
+			</div>
+		</div>
+		<div class="item login" tapmode="itemhover" onclick="openOtherWin('userinfo')" id="topbar">
+			<div class="itemlogo userlogo"><img src="../image/myicon.jpg" alt="">
+			</div>
+			<div class="itemshelf">
+				<div class="shelfinfo01" id="myname">
+					个人中心
+				</div>
+			</div>
+		</div>
+		<div class="item" tapmode="itemhover" onclick="closeSlide()">
+			<div class="itemlogo"><img src="../image/m_about_icon_share.png" alt="">
+			</div>
+			<div class="itemshelf">
+				<div class="shelfinfo01">
+					连接设备
+				</div>
+			</div>
+		</div>
+		<div class="item" tapmode="itemhover" onclick="openOtherWin('orderlist')">
+			<div class="itemlogo"><img src="../image/menu_icon_invitation.png" alt="">
+			</div>
+			<div class="itemshelf">
+				<div class="shelfinfo01">
+					我的消息
+				</div>
+			</div>
+		</div>
+		<div class="item" tapmode="itemhover" onclick="openOtherWin('aboutus')">
+			<div class="itemlogo"><img src="../image/menu_icon_about.png" alt="">
+			</div>
+			<div class="itemshelf">
+				<div class="shelfinfo01">
+					关于我们
+				</div>
+			</div>
+		</div>
+		<div class="item" tapmode="itemhover" onclick="sdktest()">
+			<div class="itemlogo"><img src="../image/menu_icon_about.png" alt="">
+			</div>
+			<div class="itemshelf">
+				<div class="shelfinfo01">
+					SDK测试
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+
+		apiready = function() {
+			var header = $api.byId('topbar');
+			$api.fixIos7Bar(header);
+		};
+		
+		function getName(){
+			var mynameid = $api.byId('myname');
+			$api.text(mynameid, getNickName());
+		}
+		
+		function sdktest(){
+			var phone = "13122000202";
+			var psw = "123";
+			$mxuser.loginWithPhone(phone, psw,function(ret,err){
+				// alert(ret.name);
+				alert(err.code);
+				alert(err.msg);
+			});
+		}
+	</script>
+</html>
