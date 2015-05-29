@@ -54,6 +54,10 @@ var rgbreadtag = 1;
 var mqttSign = 0;
 //EasyLink's overtime tag
 var getdevipSign = 0;
+//界面是否可以touchmove
+var touchmove_listener = function(event) {
+	event.preventDefault();
+};
 
 /*
 * 首页列表部分
@@ -412,7 +416,7 @@ function jsontest(strjson) {
 			} else if (key == HUMI_KEY) {
 				$("#humiid").text(jsonstr[key] + "%RH");
 			} else if (key == UART_KEY) {
-				if (linum < 10) {
+				if (linum < 50) {
 					linum++;
 				} else {
 					linum = 0;
@@ -544,7 +548,7 @@ function chatctrl() {
 }
 
 function addchatmsg(msg) {
-	if (linum < 10) {
+	if (linum < 50) {
 		linum++;
 	} else {
 		linum = 0;
@@ -724,12 +728,14 @@ function changpage(pageid, titleName) {
 		displayalldev();
 	} else if (pageid == "deviceinfo") {
 		PAGETAG = 2;
+		removeTouchMove();
 		$("#backleft").css("display", "block");
 		$("#tomyself").css("display", "none");
 		$("#toeasylink").css("display", "none");
 		//		$("#headerright").attr("src", "");
 	} else if (pageid == "virtualdev") {
 		PAGETAG = 2;
+		removeTouchMove();
 		$("#backleft").css("display", "block");
 		$("#tomyself").css("display", "none");
 		$("#toeasylink").css("display", "none");
@@ -777,6 +783,7 @@ function checkpage() {
 	//			hidPro();
 	if (PAGETAG == 2) {
 		infoToList();
+		addTouchMove();
 		hidPro();
 	} else if (PAGETAG == 1) {
 		//apicloud云编辑时候不需要判断界面
@@ -791,6 +798,7 @@ function checkpage() {
 		//				}
 	} else if (PAGETAG == 3) {
 		rgbctrltoinfo();
+		removeTouchMove();
 	} else if (PAGETAG == 4) {
 		uartctrltoinfo();
 	} else if (PAGETAG == 5) {
@@ -975,6 +983,16 @@ function overTime(signName, sign) {
 			});
 		}
 	}
+}
+
+//打开touchmove监听
+function addTouchMove() {
+	document.body.addEventListener('touchmove', touchmove_listener, false);
+}
+
+//移除touchmove监听
+function removeTouchMove() {
+	document.body.removeEventListener('touchmove', touchmove_listener, false);
 }
 
 ////编码格式的什么

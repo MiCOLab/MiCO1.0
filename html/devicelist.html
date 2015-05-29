@@ -331,7 +331,7 @@
 		<div class="micocontent" data-role="page" id="authpage">
 			<div data-role="content" align="center">
 				<p>
-					<a href="#" data-transition="none">loading...</a>
+					<a href="#" data-transition="none">加载设备...</a>
 				</p>
 			</div>
 		</div>
@@ -399,6 +399,7 @@
 					checkpage();
 				});
 			}
+			addTouchMove();
 		};
 		function getUserToken() {
 			userToken = getUserInfo().get("userToken");
@@ -423,12 +424,7 @@
 			}
 			sliderctrl();
 			PAGETAG = 3;
-			//			document.body.addEventListener('touchmove', function(event) {
-			//				event.preventDefault();
-			//			}, false);
-			//	document.body.removeEventListener('touchmove', function(event) {
-			//		event.preventDefault();
-			//	}, false);
+			addTouchMove();
 			//	删除定时publish
 			window.clearInterval(selfInterval);
 		});
