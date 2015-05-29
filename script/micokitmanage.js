@@ -415,6 +415,12 @@ function jsontest(strjson) {
 				$("#tempid").text(jsonstr[key] + "°C");
 			} else if (key == HUMI_KEY) {
 				$("#humiid").text(jsonstr[key] + "%RH");
+			} else if (key == PRO_SENSOR_DIC) {
+				$("#pro_sensorid").text(jsonstr[key]);
+			} else if (key == ATMO_SENSOR_DIC) {
+				$("#atmo_sensorid").text(jsonstr[key]);
+			} else if (key == MONTION_SENSOR_DIC) {
+				$("#montion_sensorid").text(jsonstr[key]);
 			} else if (key == UART_KEY) {
 				if (linum < 50) {
 					linum++;
@@ -439,7 +445,7 @@ function jsontest(strjson) {
 			} else if (key == RGB_BRIGHT_KEY && (1 == rgbreadtag)) {
 				rgb_bright = (jsonstr[key] / 100).toFixed(2);
 			} else if (key == MOTOR_KEY) {
-				if (jsonstr[key] == "0") {
+				if ("0" == jsonstr[key]) {
 					$("#motorbtn").attr("src", "../image/smallicon-8kaiguan.png");
 				} else {
 					$("#motorbtn").attr("src", "../image/smallicon-9kaiguan.png");
@@ -472,20 +478,48 @@ function initKey(keytype, properties) {
 				//所有type为的value
 				if (keytype == LIGHT_DIC) {
 					ADC_KEY = this.iid;
+					if (this.value) {
+						$("#adcid").text(this.value);
+					}
 				} else if (keytype == MOTOR_SENSOR_DIC) {
 					MOTOR_KEY = this.iid;
+					if (this.value) {
+						if ("0" == this.value) {
+							$("#motorbtn").attr("src", "../image/smallicon-8kaiguan.png");
+						} else {
+							$("#motorbtn").attr("src", "../image/smallicon-9kaiguan.png");
+						}
+					}
 				} else if (keytype == INFRARED_DIC) {
 					INFRARED_KEY = this.iid;
+					if (this.value) {
+						$("#infraedid").text(this.value);
+					}
 				} else if (keytype == TEMP_DIC) {
 					TEMP_KEY = this.iid;
+					if (this.value) {
+						$("#tempid").text(this.value + "°C");
+					}
 				} else if (keytype == HUMI_DIC) {
 					HUMI_KEY = this.iid;
+					if (this.value) {
+						$("#humiid").text(this.value + "%RH");
+					}
 				} else if (keytype == PRO_SENSOR_DIC) {
 					PRO_KEY = this.iid;
+					if (this.value) {
+						$("#pro_sensorid").text(this.value);
+					}
 				} else if (keytype == ATMO_SENSOR_DIC) {
 					ATMO_KEY = this.iid;
+					if (this.value) {
+						$("#atmo_sensorid").text(this.value);
+					}
 				} else if (keytype == MONTION_SENSOR_DIC) {
 					MONTION_KEY = this.iid;
+					if (this.value) {
+						$("#montion_sensorid").text(this.value);
+					}
 				}
 				break;
 		}
