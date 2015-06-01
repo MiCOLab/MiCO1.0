@@ -98,17 +98,17 @@ function devicelist_getDevList() {
 				//整行选择
 				if (clickType == 0) {
 					//					alert("online = "+devinfo.online[openret.index]);
-					//					if (devinfo.online[openret.index] == 1) {
-					//					} else {
-					//						apiToast("设备离线中", 2000);
-					//					}
 					if ("virtual" == devinfo.devId[openret.index]) {
 						changpage("virtualdev", ret[openret.index].title);
 						devlistobj.close();
 					} else {
-						changpage("deviceinfo", ret[openret.index].title);
-						devlistobj.close();
-						mqttconnect(devinfo.devId[openret.index]);
+						if (devinfo.online[openret.index] == 1) {
+							changpage("deviceinfo", ret[openret.index].title);
+							devlistobj.close();
+							mqttconnect(devinfo.devId[openret.index]);
+						} else {
+							apiToast("设备离线中", 2000);
+						}
 					}
 				}
 				//按钮
