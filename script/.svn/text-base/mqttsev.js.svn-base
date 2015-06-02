@@ -7,13 +7,17 @@
 * */
 //publish的功能
 function micoPublish(topicStr, payloadStr) {
+	//	apiToast("Publish", 1000);
+
 	var micoMqtt = api.require("micoMqtt");
 	var topic = topicStr;
 	var command = payloadStr;
+	//	apiToast("Publish 01", 1000);
 	micoMqtt.publish({
 		topic : topic,
 		command : command
 	}, function(ret, err) {
+		//		apiToast("Publish ret", 1000);
 		if (ret.status) {
 			//			apiToast("Success", 1000);
 		}
@@ -22,12 +26,21 @@ function micoPublish(topicStr, payloadStr) {
 
 //subscribe的功能
 function micoSubscribe(host, username, password, topicStr, clientID) {
+	//	apiToast("Subscribe", 1000);
+
 	var micoMqtt = api.require("micoMqtt");
 	var host = host;
 	var username = username;
 	var password = password;
 	var clientID = clientID;
 	var topic = topicStr;
+	//	apiToast("Subscribe 01", 1000);
+	//	alert("host = "+host
+	//	+"username "+username
+	//	+"password "+password
+	//	+"clientID "+clientID
+	//	+"topic "+topic
+	//	)
 	micoMqtt.startMqtt({
 		micoMqtt : micoMqtt,
 		host : host,
@@ -36,6 +49,7 @@ function micoSubscribe(host, username, password, topicStr, clientID) {
 		clientID : clientID,
 		topic : topic
 	}, function(ret, err) {
+		//		apiToast("Subscribe ret", 1000);
 		if (ret.status) {
 			micoMqtt.recvMqttMsg(function(ret, err) {
 				chgtxt(ret.subs);
@@ -52,6 +66,8 @@ function micoSubscribets(host, username, password, topicStr, clientID) {
 
 //stop mqtt
 function stopMqtt() {
+	//	apiToast("stopMqtt", 1000);
+
 	var micoMqtt = api.require("micoMqtt");
 	micoMqtt.stopMqtt(function(ret, err) {
 	});

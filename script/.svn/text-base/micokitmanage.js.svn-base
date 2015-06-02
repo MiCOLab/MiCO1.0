@@ -890,6 +890,8 @@ function infoToList() {
 	devicelist_getDevList();
 	//	删除定时publish
 	window.clearInterval(selfInterval);
+
+	stopMqtt();
 }
 
 //设备详情界面返回键操作
