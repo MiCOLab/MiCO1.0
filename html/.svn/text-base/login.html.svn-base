@@ -134,6 +134,9 @@
 			.ui-block-b span {
 				color: #FFFFFF;
 			}
+			#getverifyCode {
+				/*background: #CCCCCC;*/
+			}
 		</style>
 	</head>
 	<body>
@@ -175,7 +178,7 @@
 							<input type="number" data-theme="f" data-role="none" placeholder="验证码" id="register_code"/>
 						</div>
 						<div class="ui-block-b" id="getverifyCode">
-							<span>发送</span>
+							<span id="sendsmstxt">发送</span>
 						</div>
 					</div>
 				</div>
@@ -220,6 +223,12 @@
 	</body>
 	<script type="text/javascript">
 		var strDMlogin;
+		//倒计时标记
+		var sendSmsTag = 0;
+		//倒计时时间
+		var timecd = 0;
+		//倒计时循环对接
+		var ctrlSendSms;
 		apiready = function() {
 			api.removeLaunchView();
 			var header = $api.byId('topbar');
@@ -239,9 +248,17 @@
 			});
 		};
 		function changpswtag(tag) {
+			var header = $api.byId('pswtag');
+			var tagval;
 			$.mobile.changePage("#" + tag + "", {
 				transition : "none"
 			});
+			if("registerpage" == tag){
+				tagval = 1;
+			}else{
+				tagval = 0;
+			}
+			$api.val(header, tagval);
 		}
 	</script>
 </html>

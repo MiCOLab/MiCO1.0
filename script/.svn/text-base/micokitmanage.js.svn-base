@@ -54,6 +54,8 @@ var rgbreadtag = 1;
 var mqttSign = 0;
 //EasyLink's overtime tag
 var getdevipSign = 0;
+//临时存储wifi名字
+var wifiNameTmp = "";
 //界面是否可以touchmove
 var touchmove_listener = function(event) {
 	event.preventDefault();
@@ -631,6 +633,10 @@ function getWifiSsid() {
 	wifissid.getSsid(function(ret, err) {
 		if (ret.ssid) {
 			$("#wifi_ssid").val(ret.ssid);
+			if (wifiNameTmp != ret.ssid) {
+				$("#wifi_psw").val("");
+			}
+			wifiNameTmp = ret.ssid;
 		} else {
 			api.alert({
 				msg : err.msg

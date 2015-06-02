@@ -23,6 +23,9 @@ var CONFIRM_PHONE = "Please confirm the mobile phone number";
 //确认手机号
 var CONFIRM_EMAIL = "Please confirm your email";
 
+//短信发送太频繁
+var SMS_FRE = "太频繁了，短信不要钱啊";
+
 //确定，取消
 var OK_BTN = "OK";
 var CANCEL_BTN = "Cancel";

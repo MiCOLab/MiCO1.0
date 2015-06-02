@@ -40,29 +40,44 @@ $(function() {
 	});
 	//	发送验证码
 	$("#getverifyCode").click(function() {
-		var phone = $("#register_phone").val();
-		var pswtag = $("#pswtag").val();
-		if (true != isphone2(phone)) {
-			apiToast(CONFIRM_PHONE, 2000);
-		} else {
-			$mxuser.isExist(phone, function(ret, err) {
-				if (((0 == pswtag) && (0 < ret)) || ((1 == pswtag) && (0 == ret))) {
-					$mxuser.getSmsCode(phone, function(ret) {
-						hidPro();
-						//发送成功
-						if (ret == 0) {
-							apiToast(SEND_TO_PHONE, 2000);
-						} else {
-							alert(JSON.stringify(ret));
+		if (0 == sendSmsTag) {
+			var phone = $("#register_phone").val();
+			var pswtag = $("#pswtag").val();
+			if (true != isphone2(phone)) {
+				apiToast(CONFIRM_PHONE, 2000);
+			} else {
+				//按钮变灰不可用，并开启倒计时
+				$("#getverifyCode").css("background", "#CCCCCC");
+				sendSmsTag = 1;
+				timecd = 60;
+				$mxuser.isExist(phone, function(ret, err) {
+					if (((0 == pswtag) && (0 < ret)) || ((1 == pswtag) && (0 == ret))) {
+						$mxuser.getSmsCode(phone, function(ret) {
+							hidPro();
+							//发送成功
+							if (ret == 0) {
+								apiToast(SEND_TO_PHONE, 2000);
+							} else {
+								alert(JSON.stringify(ret));
+							}
+						});
+					} else {
+						if (0 == pswtag) {
+							apiToast(NOT_EXIST, 2000);
+						} else if (1 == pswtag) {
+							apiToast(IS_EXIST, 2000);
 						}
-					});
-				} else {
-					if (0 == pswtag)
-						apiToast(NOT_EXIST, 2000);
-					else if (1 == pswtag)
-						apiToast(IS_EXIST, 2000);
-				}
-			});
+						//恢复send按钮的初始状态
+						window.clearInterval(ctrlSendSms);
+						$("#getverifyCode").css("background", "#0088CC");
+						$("#sendsmstxt").text("发送");
+						sendSmsTag = 0;
+					}
+				});
+				ctrlSendSms = self.setInterval("setCountDown()", 1000);
+			}
+		} else {
+			apiToast(SMS_FRE, 2000);
 		}
 	});
 	//注册用户
@@ -447,4 +462,17 @@ function openWindows(type) {
 		duration : 300, //动画过渡时间，默认300毫秒
 		reload : true
 	});
+}
+
+//发送短信的倒计时程序
+function setCountDown() {
+	if (timecd > 0) {
+		$("#sendsmstxt").text(timecd-- + "s");
+	} else {
+		//恢复send按钮的初始状态
+		window.clearInterval(ctrlSendSms);
+		$("#getverifyCode").css("background", "#0088CC");
+		$("#sendsmstxt").text("发送");
+		sendSmsTag = 0;
+	}
 }

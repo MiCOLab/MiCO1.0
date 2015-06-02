@@ -260,7 +260,7 @@
 					<input type="text" data-theme="f" data-role="none" placeholder="SSID" id="wifi_ssid"/>
 				</div>
 				<div class="psw">
-					<input type="password" data-theme="f" data-role="none" placeholder="密码" id="wifi_psw"/>
+					<input type="text" data-theme="f" data-role="none" placeholder="密码" id="wifi_psw"/>
 				</div>
 				<div class="subbutton" onclick="getdevip()">
 					<span><a href="#">搜索</a></span>
@@ -399,12 +399,12 @@
 					checkpage();
 				});
 			} else {
-				api.addEventListener({
-					name : 'pause'
-				}, function(ret, err) {
-					//operation
-					closeApp();
-				})
+				//				api.addEventListener({
+				//					name : 'pause'
+				//				}, function(ret, err) {
+				//					//operation
+				//					closeApp();
+				//				})
 			}
 			addTouchMove();
 		};
