@@ -56,6 +56,8 @@ var mqttSign = 0;
 var getdevipSign = 0;
 //临时存储wifi名字
 var wifiNameTmp = "";
+//easylinkobj
+var micobindobj;
 //界面是否可以touchmove
 var touchmove_listener = function(event) {
 	event.preventDefault();
@@ -653,10 +655,10 @@ function getdevip() {
 	getdevipSign = 1;
 	setTimeout("overTime('getdevipSign',getdevipSign)", 45000);
 
-	var devipme = api.require('micoBind');
+	micobindobj = api.require('micoBind');
 	var wifi_ssid = $("#wifi_ssid").val();
 	var wifi_psw = $("#wifi_psw").val();
-	devipme.getDevip({
+	micobindobj.getDevip({
 		wifi_ssid : wifi_ssid,
 		wifi_password : wifi_psw
 	}, function(ret, err) {
@@ -864,6 +866,7 @@ function checkpage() {
 				showProgress(CONNECT_NET, true);
 			} else {
 				//do otherthing 点取消
+				stopEasyLink();
 				apiToast(AGA_T_DEVLIST, 2000);
 				PAGETAG = 5;
 			}
@@ -1010,6 +1013,7 @@ function overTime(signName, sign) {
 		apiToast(DEV_OFFLINE, 2000);
 	} else if ("getdevipSign" == signName && (1 == getdevipSign)) {
 		hidPro();
+		stopEasyLink();
 		if (100 == PAGETAG) {
 			api.confirm({
 				title : EL_OV,
@@ -1035,6 +1039,15 @@ function addTouchMove() {
 //移除touchmove监听
 function removeTouchMove() {
 	document.body.removeEventListener('touchmove', touchmove_listener, false);
+}
+
+//停止发包
+function stopEasyLink() {
+	if (strDM != 'ios') {
+		micobindobj = api.require('micoBind');
+		micobindobj.stopFtc(function(ret, err) {
+		});
+	}
 }
 
 ////编码格式的什么
