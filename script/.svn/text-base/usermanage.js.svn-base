@@ -429,7 +429,7 @@ function openIndexWin() {
 		url : "../index.html",
 		reload : true,
 		bgColor : '#F0F0F0',
-		slidBackEnabeld : false,
+		slidBackEnabled : false,
 		animation : {
 			type : 'none'
 		}
@@ -442,7 +442,7 @@ function openDevlistWin() {
 		url : './devicelist.html',
 		reload : true,
 		bgColor : '#F0F0F0',
-		slidBackEnabeld : false,
+		slidBackEnabled : false,
 		animation : {
 			type : 'none'
 		}
