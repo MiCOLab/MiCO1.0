@@ -348,7 +348,8 @@ function chgtxt(messageObj) {
 
 function jsontest(strjson) {
 	//传来的是String型的要转成json
-	//			alert(strjson);
+//				alert(strjson);
+//apiToast("strjson = "+JSON.stringify(strjson), 5000);
 	var jsonstr = strjson;
 	//	var jsonstr = $api.strToJson(strjson);
 	for (var key in jsonstr) {
@@ -1043,11 +1044,9 @@ function removeTouchMove() {
 
 //停止发包
 function stopEasyLink() {
-	if (strDM != 'ios') {
-		micobindobj = api.require('micoBind');
-		micobindobj.stopFtc(function(ret, err) {
-		});
-	}
+	micobindobj = api.require('micoBind');
+	micobindobj.stopFtc(function(ret, err) {
+	});
 }
 
 ////编码格式的什么

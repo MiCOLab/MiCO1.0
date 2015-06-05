@@ -513,7 +513,7 @@
 		}
 
 		function ctrlrgb() {
-			rgbctrlinterval = self.setInterval("sendrgbcode()", 2 * 1000);
+			rgbctrlinterval = self.setInterval("sendrgbcode()", 1 * 1000);
 		}
 
 		function sendrgbcode() {
