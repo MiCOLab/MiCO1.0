@@ -55,6 +55,10 @@
 			#tohomepage {
 				display: none;
 			}
+			#devlistshowid {
+				text-align: center;
+				display: none;
+			}
 		</style>
 	</head>
 	<body>
@@ -64,13 +68,16 @@
 			<a class="left" id="tomyself"><img src="../image/smallicon-3.png" alt=""/></a>
 			<span class="center" id="titleName">MiCOKit</span>
 			<a class="right" id="toeasylink"><img src="../image/smallicon-4.png" alt=""/></a>
-			<a class="right" id="tohomepage"><img src="../image/smallicon-3.png" alt=""/></a>
+			<a class="right" id="tohomepage"><img src="../image/smallicon-3r.png" alt=""/></a>
 		</header>
 		<!--设备详情-->
 		<div class="micocontent" data-role="page" id="homePage">
 			<div data-role="content" align="center">
-				<p>
+				<p id="devlistlodingid">
 					<a href="#aboutPage" data-transition="none">加载设备...</a>
+				</p>
+				<p id="devlistshowid">
+					<img src="../image/device_refresh.png" alt=""/>
 				</p>
 			</div>
 		</div>
@@ -271,7 +278,7 @@
 		<div class="micocontent" data-role="page" id="devmanage">
 			<div class="content">
 				<div class="phone">
-					<input type="number" data-theme="f" data-role="none" placeholder="设备密码" id="dev_psw"/>
+					<input type="number" data-theme="f" data-role="none"  onfocus="this.type='number'" onblur="this.type='text'"  placeholder="设备密码" id="dev_psw"/>
 				</div>
 				<!--<div class="psw">
 				<input type="password" data-theme="f" data-role="none" placeholder="Password Confirmation" id="dev_psw_conf"/>
@@ -330,8 +337,11 @@
 		<!--设备授权-->
 		<div class="micocontent" data-role="page" id="authpage">
 			<div data-role="content" align="center">
-				<p>
-					<a href="#" data-transition="none">加载设备...</a>
+				<p id="devAuthlodingid">
+					<a href="#aboutPage" data-transition="none">加载设备...</a>
+				</p>
+				<p id="devAuthshowid">
+					<img src="../image/device_refresh.png" alt=""/>
 				</p>
 			</div>
 		</div>
@@ -413,6 +423,16 @@
 			PAGETAG = 5;
 			//获取ssid
 			getWifiSsid();
+		});
+		//设备列表刷新
+		$("#devlistshowid").click(function() {
+			showRefreshImg(1);
+			devicelist_getDevList();
+		});
+		//授权设备刷新
+		$("#devAuthshowid").click(function() {
+			showAuthRefreshImg(1);
+			devicelist_getAuthDev();
 		});
 		//		前往rgb页面
 		$("#rgbliid").click(function() {

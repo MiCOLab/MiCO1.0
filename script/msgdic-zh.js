@@ -147,6 +147,9 @@ var GOOD_JOB = "棒棒的";
 //改好了
 var EDI_SUCCESS  ="哦了";
 
+//网络不好
+var WIFI_EXCEPTION  ="网络不好";
+
 
 
 

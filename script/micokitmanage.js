@@ -58,6 +58,10 @@ var getdevipSign = 0;
 var wifiNameTmp = "";
 //easylinkobj
 var micobindobj;
+//是否显示loading
+var devlisttag;
+//是否显示loading
+var devAuthtag;
 //界面是否可以touchmove
 var touchmove_listener = function(event) {
 	event.preventDefault();
@@ -66,24 +70,69 @@ var touchmove_listener = function(event) {
 /*
 * 首页列表部分
 */
+/**
+ * 0,都不显示
+ * 1，显示loading
+ * 2、显示刷新
+ */
+function showRefreshImg(tag) {
+	if (0 == tag) {
+		$("#devlistlodingid").css("display", "none");
+		$("#devlistshowid").css("display", "none");
+	} else if ((1 == tag) && (0 == devlisttag)) {
+		$("#devlistlodingid").css("display", "block");
+		$("#devlistshowid").css("display", "none");
+	} else if ((2 == tag) && (0 == devlisttag)) {
+		$("#devlistlodingid").css("display", "none");
+		$("#devlistshowid").css("display", "block");
+	}
+}
+
+/**
+ * 0,都不显示
+ * 1，显示loading
+ * 2、显示刷新
+ */
+function showAuthRefreshImg(tag) {
+	if (0 == tag) {
+		$("#devAuthlodingid").css("display", "none");
+		$("#devAuthshowid").css("display", "none");
+	} else if ((1 == tag) && (0 == devAuthtag)) {
+		$("#devAuthlodingid").css("display", "block");
+		$("#devAuthshowid").css("display", "none");
+	} else if ((2 == tag) && (0 == devAuthtag)) {
+		$("#devAuthlodingid").css("display", "none");
+		$("#devAuthshowid").css("display", "block");
+	}
+}
+
 //获取账号下所有可以控制的设备
 function devicelist_getDevList() {
 	//	alert("devicelist_getDevList");
 	devlistobj = api.require('listView');
+	devlisttag = 0;
+	showRefreshImg(1);
+	var t = setTimeout("showRefreshImg(2)", 3 * 1000)
 	$mico.getDevList(userToken, function(ret, err, devinfo) {
 		//		alert(JSON.stringify(devinfo));
 		if (ret && (1 == PAGETAG)) {
+			devlisttag = 1;
+			showRefreshImg(0);
 			devlistobj.open({
 				//				h : 'auto',
 				h : 800,
 				y : listy,
-				itemHeight : '87',
+				cellHeight : 75,
 				rightBtn : [{
+					bg : '#d4257f',
 					color : '#d4257f',
-					title : '删除'
+					title : '删除',
+					icon : "widget://image/smallicon-8.png"
 				}, {
+					bg : '#d35f84',
 					color : '#d35f84',
-					title : '修改'
+					title : '修改',
+					icon : "widget://image/smallicon-9.png"
 				}],
 				"borderColor" : "#CCCCCC",
 				"cellBgColor" : "#FCFCFC",
@@ -175,12 +224,17 @@ function devicelist_getDevList() {
 function devicelist_getAuthDev() {
 	//			alert("devicelist_getAuthDev");
 	authdevobj = api.require('listView');
+	devAuthtag = 0;
+	showAuthRefreshImg(1);
+	var t = setTimeout("showAuthRefreshImg(2)", 3 * 1000)
 	$mico.getAuthDev(userToken, function(ret, err, devinfo) {
 		if (ret && (8 == PAGETAG)) {
+			devAuthtag = 1;
+			showAuthRefreshImg(0);
 			authdevobj.open({
 				h : 800,
 				y : listy,
-				itemHeight : '87',
+				cellHeight : 75,
 				"borderColor" : "#CCCCCC",
 				"cellBgColor" : "#FCFCFC",
 				imgHeight : '45',
@@ -348,8 +402,8 @@ function chgtxt(messageObj) {
 
 function jsontest(strjson) {
 	//传来的是String型的要转成json
-//				alert(strjson);
-//apiToast("strjson = "+JSON.stringify(strjson), 5000);
+	//				alert(strjson);
+	//apiToast("strjson = "+JSON.stringify(strjson), 5000);
 	var jsonstr = strjson;
 	//	var jsonstr = $api.strToJson(strjson);
 	for (var key in jsonstr) {
