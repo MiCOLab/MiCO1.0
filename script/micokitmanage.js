@@ -62,6 +62,8 @@ var micobindobj;
 var devlisttag;
 //是否显示loading
 var devAuthtag;
+//防止设备离线所定义的全局设备信息标记
+var devinfo;
 //界面是否可以touchmove
 var touchmove_listener = function(event) {
 	event.preventDefault();
@@ -113,9 +115,10 @@ function devicelist_getDevList() {
 	devlisttag = 0;
 	showRefreshImg(1);
 	var t = setTimeout("showRefreshImg(2)", 3 * 1000)
-	$mico.getDevList(userToken, function(ret, err, devinfo) {
+	$mico.getDevList(userToken, function(ret, err, devinfocb) {
 		//		alert(JSON.stringify(devinfo));
 		if (ret && (1 == PAGETAG)) {
+			devinfo = devinfocb;
 			devlisttag = 1;
 			showRefreshImg(0);
 			devlistobj.open({
@@ -206,8 +209,9 @@ function devicelist_getDevList() {
 				//devicelist_getDevList();
 				//触发加载事件
 				//micokit
-				$mico.getDevList(userToken, function(ret, err, devinfo) {
+				$mico.getDevList(userToken, function(ret, err, devinforl) {
 					if (ret) {
+						devinfo = devinforl;
 						devlistobj.reloadData({
 							data : ret
 						});
