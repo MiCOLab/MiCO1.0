@@ -421,7 +421,7 @@ function jsontest(strjson) {
 					case RGB_DIC:
 						$("#rgbliid").css("display", "block");
 						//主动读取rgb设备的信息
-						readDevInfo('{"'+RGB_SWI_KEY+'":false,"'+RGB_HUES_KEY+'":0,"'+RGB_SATU_KEY+'":0,"'+RGB_BRIGHT_KEY+'":0}');
+						readDevInfo('{"' + RGB_SWI_KEY + '":false,"' + RGB_HUES_KEY + '":0,"' + RGB_SATU_KEY + '":0,"' + RGB_BRIGHT_KEY + '":0}');
 						break;
 					case LIGHT_DIC:
 						$("#devdataid").css("display", "block");
@@ -496,10 +496,10 @@ function jsontest(strjson) {
 			} else if (key == RGB_SWI_KEY && (1 == rgbreadtag)) {
 				rgb_switch = jsonstr[key];
 				if (jsonstr[key] == true) {
-//					$("#rgbonoffbtn").get(0).options[1].selected = true;
+					//					$("#rgbonoffbtn").get(0).options[1].selected = true;
 					$("#rgbonoffbtn").attr("src", "../image/switchon.svg");
 				} else {
-//					$("#rgbonoffbtn").get(0).options[0].selected = true;
+					//					$("#rgbonoffbtn").get(0).options[0].selected = true;
 					$("#rgbonoffbtn").attr("src", "../image/switchoff.svg");
 				}
 			} else if (key == RGB_HUES_KEY && (1 == rgbreadtag)) {
@@ -729,12 +729,27 @@ function getdevip() {
 			if (ret.devip) {
 				dev_token = $.md5(ret.devip + userToken);
 				dev_ip = ret.devip;
-				changpage("devmanage", "设置设备密码");
-				hidPro();
-				$("#backleft").css("display", "none");
+
+//				alert("dev_ip = " + dev_ip + " dev_token = " + dev_token);
+				$mico.getDevState(dev_ip, dev_token, function(rets, errs) {
+					hidPro();
+					//					alert(JSON.stringify(rets));
+					if (rets.isActivated) {
+						//页面跳转
+						changpage("homePage", "MiCOKit");
+						//	刷新内容
+						devicelist_getDevList();
+					} else {
+						ajaxgetdveid();
+//						changpage("devmanage", "设置设备密码");
+						//												hidPro();
+//						$("#backleft").css("display", "none");
+					}
+				});
+
 			} else {
 				$("#backleft").css("display", "block");
-				hidPro();
+				//				hidPro();
 				api.alert({
 					msg : err.msg
 				});
@@ -748,8 +763,9 @@ function ajaxgetdveid() {
 	showProgress(SET_DEV_PSW, true);
 	//此时正在搜索设备，不允许返回
 	PAGETAG = 101;
-	var dev_psw = $("#dev_psw").val();
-	if (dev_psw != "" && isNum(dev_psw)) {
+	var dev_psw = "88888888";
+//	var dev_psw = $("#dev_psw").val();
+//	if (dev_psw != "" && isNum(dev_psw)) {
 		$mico.getDevid(dev_ip, dev_psw, dev_token, function(ret, err) {
 			if (ret) {
 				var devid = ret.device_id;
@@ -761,11 +777,11 @@ function ajaxgetdveid() {
 				//				alert(JSON.stringify(err));
 			}
 		});
-	} else {
-		$("#backleft").css("display", "block");
-		hidPro();
-		apiToast(PSW_M_DIG, 2000);
-	}
+//	} else {
+//		$("#backleft").css("display", "block");
+//		hidPro();
+//		apiToast(PSW_M_DIG, 2000);
+//	}
 }
 
 //去云端绑定设备

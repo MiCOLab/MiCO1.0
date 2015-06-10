@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,initial-scale=1.0,width=device-width"/>
+		<title>APP</title>
+		<script type="text/javascript" src="../script/jquery-2.1.3.js"></script>
+		<style>
+		</style>
+	</head>
+	<body>
+		<div id="wpic" align="center">
+			<input type="button" value="状态" onclick="getDevStat()"/>
+			<br/>
+			<br/>
+			<br/>
+			<input type="button" value="获取" onclick="getDevID()"/>
+		</div>
+	</body>
+	<script>
+		function getDevStat() {
+			$.ajax({
+				url : "http://192.168.2.40:8001/dev-state",
+				type : "POST",
+				//				dataType:"JSONP",
+				data : JSON.stringify({
+					login_id : "admin",
+					dev_passwd : "1234",
+					user_token : "11111111"
+				}),
+				headers : {
+					"Content-Type" : "application/json"
+				},
+				success : function(ret) {
+					alert(JSON.stringify(ret));
+				},
+				error : function(err) {
+					alert(JSON.stringify(err));
+				}
+			});
+		}
+		function getDevID() {
+			$.ajax({
+				url : "http://192.168.2.40:8001/dev-activate",
+				type : "POST",
+				//				dataType:"JSONP",
+				data : JSON.stringify({
+					login_id : "admin",
+					dev_passwd : "1234",
+					user_token : "11111111"
+				}),
+				headers : {
+					"Content-Type" : "application/json"
+				},
+				success : function(ret) {
+					alert(JSON.stringify(ret));
+				},
+				error : function(err) {
+					alert(JSON.stringify(err));
+				}
+			});
+		}
+	</script>
+</html>
