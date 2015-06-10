@@ -54,28 +54,88 @@ var rgbreadtag = 1;
 var mqttSign = 0;
 //EasyLink's overtime tag
 var getdevipSign = 0;
+//临时存储wifi名字
+var wifiNameTmp = "";
+//easylinkobj
+var micobindobj;
+//是否显示loading
+var devlisttag;
+//是否显示loading
+var devAuthtag;
+//防止设备离线所定义的全局设备信息标记
+var devinfo;
+//界面是否可以touchmove
+var touchmove_listener = function(event) {
+	event.preventDefault();
+};
 
 /*
 * 首页列表部分
 */
+/**
+ * 0,都不显示
+ * 1，显示loading
+ * 2、显示刷新
+ */
+function showRefreshImg(tag) {
+	if (0 == tag) {
+		$("#devlistlodingid").css("display", "none");
+		$("#devlistshowid").css("display", "none");
+	} else if ((1 == tag) && (0 == devlisttag)) {
+		$("#devlistlodingid").css("display", "block");
+		$("#devlistshowid").css("display", "none");
+	} else if ((2 == tag) && (0 == devlisttag)) {
+		$("#devlistlodingid").css("display", "none");
+		$("#devlistshowid").css("display", "block");
+	}
+}
+
+/**
+ * 0,都不显示
+ * 1，显示loading
+ * 2、显示刷新
+ */
+function showAuthRefreshImg(tag) {
+	if (0 == tag) {
+		$("#devAuthlodingid").css("display", "none");
+		$("#devAuthshowid").css("display", "none");
+	} else if ((1 == tag) && (0 == devAuthtag)) {
+		$("#devAuthlodingid").css("display", "block");
+		$("#devAuthshowid").css("display", "none");
+	} else if ((2 == tag) && (0 == devAuthtag)) {
+		$("#devAuthlodingid").css("display", "none");
+		$("#devAuthshowid").css("display", "block");
+	}
+}
+
 //获取账号下所有可以控制的设备
 function devicelist_getDevList() {
 	//	alert("devicelist_getDevList");
 	devlistobj = api.require('listView');
-	$mico.getDevList(userToken, function(ret, err, devinfo) {
+	devlisttag = 0;
+	showRefreshImg(1);
+	var t = setTimeout("showRefreshImg(2)", 3 * 1000)
+	$mico.getDevList(userToken, function(ret, err, devinfocb) {
 		//		alert(JSON.stringify(devinfo));
 		if (ret && (1 == PAGETAG)) {
+			devinfo = devinfocb;
+			devlisttag = 1;
+			showRefreshImg(0);
 			devlistobj.open({
 				//				h : 'auto',
 				h : 800,
 				y : listy,
-				itemHeight : '87',
+				cellHeight : 75,
 				rightBtn : [{
+					bg : '#d4257f',
 					color : '#d4257f',
-					title : 'Delete'
+					title : '删除',
+					icon : "widget://image/smallicon-8.png"
 				}, {
+					bg : '#d35f84',
 					color : '#d35f84',
-					title : 'Edit'
+					title : '修改',
+					icon : "widget://image/smallicon-9.png"
 				}],
 				"borderColor" : "#CCCCCC",
 				"cellBgColor" : "#FCFCFC",
@@ -94,17 +154,17 @@ function devicelist_getDevList() {
 				//整行选择
 				if (clickType == 0) {
 					//					alert("online = "+devinfo.online[openret.index]);
-					//					if (devinfo.online[openret.index] == 1) {
-					//					} else {
-					//						apiToast("设备离线中", 2000);
-					//					}
 					if ("virtual" == devinfo.devId[openret.index]) {
 						changpage("virtualdev", ret[openret.index].title);
 						devlistobj.close();
 					} else {
-						changpage("deviceinfo", ret[openret.index].title);
-						devlistobj.close();
-						mqttconnect(devinfo.devId[openret.index]);
+						if (devinfo.online[openret.index] == 1) {
+							changpage("deviceinfo", ret[openret.index].title);
+							devlistobj.close();
+							mqttconnect(devinfo.devId[openret.index]);
+						} else {
+							apiToast("设备离线中", 2000);
+						}
 					}
 				}
 				//按钮
@@ -149,8 +209,9 @@ function devicelist_getDevList() {
 				//devicelist_getDevList();
 				//触发加载事件
 				//micokit
-				$mico.getDevList(userToken, function(ret, err, devinfo) {
+				$mico.getDevList(userToken, function(ret, err, devinforl) {
 					if (ret) {
+						devinfo = devinforl;
 						devlistobj.reloadData({
 							data : ret
 						});
@@ -167,12 +228,17 @@ function devicelist_getDevList() {
 function devicelist_getAuthDev() {
 	//			alert("devicelist_getAuthDev");
 	authdevobj = api.require('listView');
+	devAuthtag = 0;
+	showAuthRefreshImg(1);
+	var t = setTimeout("showAuthRefreshImg(2)", 3 * 1000)
 	$mico.getAuthDev(userToken, function(ret, err, devinfo) {
 		if (ret && (8 == PAGETAG)) {
+			devAuthtag = 1;
+			showAuthRefreshImg(0);
 			authdevobj.open({
 				h : 800,
 				y : listy,
-				itemHeight : '87',
+				cellHeight : 75,
 				"borderColor" : "#CCCCCC",
 				"cellBgColor" : "#FCFCFC",
 				imgHeight : '45',
@@ -243,7 +309,7 @@ function modifyDevName(devid, indexNo) {
 			if (inputname) {
 				$mico.editDevName(APP_ID, userToken, inputname, devid, function(ret, err) {
 					if (ret) {
-						apiToast('Good name', 3000);
+						apiToast('好名字', 3000);
 						devlistobj.refreshItem({
 							index : indexNo,
 							data : {
@@ -272,7 +338,7 @@ function deleteDevName(devid, indexNo) {
 		if (ret.buttonIndex == 1) {
 			$mico.deleteDev(APP_ID, userToken, devid, function(ret, err) {
 				if (ret) {
-					apiToast('All right', 3000);
+					apiToast('好吧', 3000);
 					devlistobj.deleteItem({
 						index : indexNo
 					});
@@ -282,7 +348,7 @@ function deleteDevName(devid, indexNo) {
 				}
 			});
 		} else {
-			apiToast("Well", 2000);
+			apiToast(GOOD_JOB, 2000);
 		}
 	});
 
@@ -316,11 +382,10 @@ function mqttconnect(deviceid) {
 	app1 = clientID;
 	//	var clientID = deviceid.split("/")[1];
 	//	apiToast(clientID, 2000);
-	micoSubscribets(host, username, password, deviceid + "/out/#", clientID);
-	//	micoSubscribe(host, username, password, deviceid + "/out/#", clientID);
-	//	sleeprun(deviceid);
+	micoSubscribe(host, username, password, deviceid + "/out/#", clientID);
+	sleeprun(deviceid);
 	mqttSign = 1;
-//	setTimeout("overTime('mqttSign',mqttSign)", 15000);
+	setTimeout("overTime('mqttSign',mqttSign)", 15000);
 }
 
 //设置2秒执行一次的publish操作获取设备状态
@@ -341,9 +406,9 @@ function chgtxt(messageObj) {
 
 function jsontest(strjson) {
 	//传来的是String型的要转成json
-	var jsonstr = $api.strToJson(strjson);
-	alert(jsonstr.services);
-	//	var jsonstr = strjson;
+	//				alert(strjson);
+	//apiToast("strjson = "+JSON.stringify(strjson), 5000);
+	var jsonstr = strjson;
 	//	var jsonstr = $api.strToJson(strjson);
 	for (var key in jsonstr) {
 		if (key == "services") {
@@ -356,7 +421,7 @@ function jsontest(strjson) {
 					case RGB_DIC:
 						$("#rgbliid").css("display", "block");
 						//主动读取rgb设备的信息
-						//readDevInfo('{"5":false,"6":0,"7":0,"8":0}');
+						readDevInfo('{"' + RGB_SWI_KEY + '":false,"' + RGB_HUES_KEY + '":0,"' + RGB_SATU_KEY + '":0,"' + RGB_BRIGHT_KEY + '":0}');
 						break;
 					case LIGHT_DIC:
 						$("#devdataid").css("display", "block");
@@ -401,7 +466,7 @@ function jsontest(strjson) {
 			});
 			//	apiToast("Update Device", 2000);
 			//	删除定时publish
-			//			window.clearInterval(selfInterval);
+			window.clearInterval(selfInterval);
 			hidPro();
 			//			alert("ADC_KEY = " + ADC_KEY + "UART_KEY = " + UART_KEY + "RGB_SWI_KEY = " + RGB_SWI_KEY + "RGB_HUES_KEY = " + RGB_HUES_KEY + "RGB_SATU_KEY = " + RGB_SATU_KEY + "RGB_BRIGHT_KEY = " + RGB_BRIGHT_KEY);
 		} else {
@@ -413,8 +478,14 @@ function jsontest(strjson) {
 				$("#tempid").text(jsonstr[key] + "°C");
 			} else if (key == HUMI_KEY) {
 				$("#humiid").text(jsonstr[key] + "%RH");
+			} else if (key == PRO_SENSOR_DIC) {
+				$("#pro_sensorid").text(jsonstr[key]);
+			} else if (key == ATMO_SENSOR_DIC) {
+				$("#atmo_sensorid").text(jsonstr[key]);
+			} else if (key == MONTION_SENSOR_DIC) {
+				$("#montion_sensorid").text(jsonstr[key]);
 			} else if (key == UART_KEY) {
-				if (linum < 10) {
+				if (linum < 50) {
 					linum++;
 				} else {
 					linum = 0;
@@ -425,9 +496,11 @@ function jsontest(strjson) {
 			} else if (key == RGB_SWI_KEY && (1 == rgbreadtag)) {
 				rgb_switch = jsonstr[key];
 				if (jsonstr[key] == true) {
-					$("#rgbonoffbtn").get(0).options[1].selected = true;
+					//					$("#rgbonoffbtn").get(0).options[1].selected = true;
+					$("#rgbonoffbtn").attr("src", "../image/switchon.svg");
 				} else {
-					$("#rgbonoffbtn").get(0).options[0].selected = true;
+					//					$("#rgbonoffbtn").get(0).options[0].selected = true;
+					$("#rgbonoffbtn").attr("src", "../image/switchoff.svg");
 				}
 			} else if (key == RGB_HUES_KEY && (1 == rgbreadtag)) {
 				rgb_hues = (jsonstr[key] / 360).toFixed(4);
@@ -437,7 +510,7 @@ function jsontest(strjson) {
 			} else if (key == RGB_BRIGHT_KEY && (1 == rgbreadtag)) {
 				rgb_bright = (jsonstr[key] / 100).toFixed(2);
 			} else if (key == MOTOR_KEY) {
-				if (jsonstr[key] == "0") {
+				if ("0" == jsonstr[key]) {
 					$("#motorbtn").attr("src", "../image/smallicon-8kaiguan.png");
 				} else {
 					$("#motorbtn").attr("src", "../image/smallicon-9kaiguan.png");
@@ -470,20 +543,48 @@ function initKey(keytype, properties) {
 				//所有type为的value
 				if (keytype == LIGHT_DIC) {
 					ADC_KEY = this.iid;
+					if (this.value) {
+						$("#adcid").text(this.value);
+					}
 				} else if (keytype == MOTOR_SENSOR_DIC) {
 					MOTOR_KEY = this.iid;
+					if (this.value) {
+						if ("0" == this.value) {
+							$("#motorbtn").attr("src", "../image/smallicon-8kaiguan.png");
+						} else {
+							$("#motorbtn").attr("src", "../image/smallicon-9kaiguan.png");
+						}
+					}
 				} else if (keytype == INFRARED_DIC) {
 					INFRARED_KEY = this.iid;
+					if (this.value) {
+						$("#infraedid").text(this.value);
+					}
 				} else if (keytype == TEMP_DIC) {
 					TEMP_KEY = this.iid;
+					if (this.value) {
+						$("#tempid").text(this.value + "°C");
+					}
 				} else if (keytype == HUMI_DIC) {
 					HUMI_KEY = this.iid;
+					if (this.value) {
+						$("#humiid").text(this.value + "%RH");
+					}
 				} else if (keytype == PRO_SENSOR_DIC) {
 					PRO_KEY = this.iid;
+					if (this.value) {
+						$("#pro_sensorid").text(this.value);
+					}
 				} else if (keytype == ATMO_SENSOR_DIC) {
 					ATMO_KEY = this.iid;
+					if (this.value) {
+						$("#atmo_sensorid").text(this.value);
+					}
 				} else if (keytype == MONTION_SENSOR_DIC) {
 					MONTION_KEY = this.iid;
+					if (this.value) {
+						$("#montion_sensorid").text(this.value);
+					}
 				}
 				break;
 		}
@@ -546,7 +647,7 @@ function chatctrl() {
 }
 
 function addchatmsg(msg) {
-	if (linum < 10) {
+	if (linum < 50) {
 		linum++;
 	} else {
 		linum = 0;
@@ -564,16 +665,16 @@ function addchatmsg(msg) {
 * RGB控制部分
 */
 //开关灯按钮
-function checkrgbbtn() {
-	var rgbbtn = $("#rgbonoffbtn").find("option:selected").text();
-	if (rgbbtn == "On") {
-		dealwithrgbbtn(true);
-		ctrlrgb();
-	} else if (rgbbtn == "Off") {
-		window.clearInterval(rgbctrlinterval);
-		dealwithrgbbtn(false);
-	}
-}
+//function checkrgbbtn() {
+//	var rgbbtn = $("#rgbonoffbtn").find("option:selected").text();
+//	if (rgbbtn == "On") {
+//		dealwithrgbbtn(true);
+//		ctrlrgb();
+//	} else if (rgbbtn == "Off") {
+//		window.clearInterval(rgbctrlinterval);
+//		dealwithrgbbtn(false);
+//	}
+//}
 
 //专门服务于开关灯
 function dealwithrgbbtn(ifopen) {
@@ -595,6 +696,10 @@ function getWifiSsid() {
 	wifissid.getSsid(function(ret, err) {
 		if (ret.ssid) {
 			$("#wifi_ssid").val(ret.ssid);
+			if (wifiNameTmp != ret.ssid) {
+				$("#wifi_psw").val("");
+			}
+			wifiNameTmp = ret.ssid;
 		} else {
 			api.alert({
 				msg : err.msg
@@ -605,16 +710,16 @@ function getWifiSsid() {
 
 //获取设备ip
 function getdevip() {
-	showProgress(CONNECT_NET, true);
+	showProgress(CONNECT_NET, false);
 	//此时正在搜索设备，不允许返回
 	PAGETAG = 100;
 	getdevipSign = 1;
 	setTimeout("overTime('getdevipSign',getdevipSign)", 45000);
 
-	var devipme = api.require('micoBind');
+	micobindobj = api.require('micoBind');
 	var wifi_ssid = $("#wifi_ssid").val();
 	var wifi_psw = $("#wifi_psw").val();
-	devipme.getDevip({
+	micobindobj.getDevip({
 		wifi_ssid : wifi_ssid,
 		wifi_password : wifi_psw
 	}, function(ret, err) {
@@ -624,12 +729,25 @@ function getdevip() {
 			if (ret.devip) {
 				dev_token = $.md5(ret.devip + userToken);
 				dev_ip = ret.devip;
-				changpage("devmanage", "Device Password");
-				hidPro();
-				$("#backleft").css("display", "none");
+
+				$mico.getDevState(dev_ip, dev_token, function(rets, errs) {
+					hidPro();
+					alert(JSON.stringify(rets));
+					if (rets.isActivated) {
+						//页面跳转
+						changpage("homePage", "MiCOKit");
+						//	刷新内容
+						devicelist_getDevList();
+					} else {
+						changpage("devmanage", "设置设备密码");
+						//												hidPro();
+						$("#backleft").css("display", "none");
+					}
+				});
+
 			} else {
 				$("#backleft").css("display", "block");
-				hidPro();
+				//				hidPro();
 				api.alert({
 					msg : err.msg
 				});
@@ -668,7 +786,7 @@ function bindtocloud(devid) {
 	$mico.bindDevCloud(APP_ID, userToken, dev_token, function(ret, err) {
 		if (ret) {
 			//页面跳转
-			changpage("homePage", "MicoKit");
+			changpage("homePage", "MiCOKit");
 			hidPro();
 			//	刷新内容
 			devicelist_getDevList();
@@ -726,12 +844,14 @@ function changpage(pageid, titleName) {
 		displayalldev();
 	} else if (pageid == "deviceinfo") {
 		PAGETAG = 2;
+		removeTouchMove();
 		$("#backleft").css("display", "block");
 		$("#tomyself").css("display", "none");
 		$("#toeasylink").css("display", "none");
 		//		$("#headerright").attr("src", "");
 	} else if (pageid == "virtualdev") {
 		PAGETAG = 2;
+		removeTouchMove();
 		$("#backleft").css("display", "block");
 		$("#tomyself").css("display", "none");
 		$("#toeasylink").css("display", "none");
@@ -779,6 +899,7 @@ function checkpage() {
 	//			hidPro();
 	if (PAGETAG == 2) {
 		infoToList();
+		addTouchMove();
 		hidPro();
 	} else if (PAGETAG == 1) {
 		//apicloud云编辑时候不需要判断界面
@@ -793,6 +914,7 @@ function checkpage() {
 		//				}
 	} else if (PAGETAG == 3) {
 		rgbctrltoinfo();
+		removeTouchMove();
 	} else if (PAGETAG == 4) {
 		uartctrltoinfo();
 	} else if (PAGETAG == 5) {
@@ -814,10 +936,11 @@ function checkpage() {
 		}, function(ret, err) {
 			if (ret.buttonIndex == 1) {
 				//do something 点确定
-				apiToast("Good job", 2000);
+				apiToast(GOOD_JOB, 2000);
 				showProgress(CONNECT_NET, true);
 			} else {
 				//do otherthing 点取消
+				stopEasyLink();
 				apiToast(AGA_T_DEVLIST, 2000);
 				PAGETAG = 5;
 			}
@@ -831,7 +954,7 @@ function checkpage() {
 		}, function(ret, err) {
 			if (ret.buttonIndex == 1) {
 				//do something 点确定
-				apiToast("Good job", 2000);
+				apiToast(GOOD_JOB, 2000);
 				showProgress(SET_DEV_PSW, true);
 			} else {
 				//do otherthing 点取消
@@ -845,17 +968,19 @@ function checkpage() {
 //设备详情界面返回键操作
 function infoToList() {
 	//页面跳转
-	changpage("homePage", "MicoKit");
+	changpage("homePage", "MiCOKit");
 	//	刷新内容
 	devicelist_getDevList();
 	//	删除定时publish
 	window.clearInterval(selfInterval);
+
+	stopMqtt();
 }
 
 //设备详情界面返回键操作
 function myselfToList() {
 	//页面跳转
-	changpage("homePage", "MicoKit");
+	changpage("homePage", "MiCOKit");
 	//	刷新内容
 	devicelist_getDevList();
 }
@@ -868,6 +993,7 @@ function rgbctrltoinfo() {
 	sleeprun(DEVID_GLOBAL);
 	//	删除定时publish
 	window.clearInterval(rgbctrlinterval);
+
 }
 
 function uartctrltoinfo() {
@@ -880,7 +1006,7 @@ function uartctrltoinfo() {
 
 function easylinktoList() {
 	//页面跳转
-	changpage("homePage", "MicoKit");
+	changpage("homePage", "MiCOKit");
 	//	刷新内容
 	devicelist_getDevList();
 }
@@ -961,6 +1087,7 @@ function overTime(signName, sign) {
 		apiToast(DEV_OFFLINE, 2000);
 	} else if ("getdevipSign" == signName && (1 == getdevipSign)) {
 		hidPro();
+		stopEasyLink();
 		if (100 == PAGETAG) {
 			api.confirm({
 				title : EL_OV,
@@ -976,6 +1103,23 @@ function overTime(signName, sign) {
 			});
 		}
 	}
+}
+
+//打开touchmove监听
+function addTouchMove() {
+	document.body.addEventListener('touchmove', touchmove_listener, false);
+}
+
+//移除touchmove监听
+function removeTouchMove() {
+	document.body.removeEventListener('touchmove', touchmove_listener, false);
+}
+
+//停止发包
+function stopEasyLink() {
+	micobindobj = api.require('micoBind');
+	micobindobj.stopFtc(function(ret, err) {
+	});
 }
 
 ////编码格式的什么
