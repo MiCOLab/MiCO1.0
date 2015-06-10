@@ -59,6 +59,11 @@
 				text-align: center;
 				display: none;
 			}
+			#rgbonoffbtn {
+				position: absolute;
+				height: 80px;
+				width: 80px;
+			}
 		</style>
 	</head>
 	<body>
@@ -231,13 +236,14 @@
 		</div>
 		<!--RGB控制-->
 		<div class="micocontent" data-role="page" id="rgbctrl">
-			<div class="onoffbtn">
-				<select id="rgbonoffbtn" data-role="slider" onchange="checkrgbbtn()">
-					<option>Off</option>
-					<option>On</option>
-				</select>
-			</div>
+			<!--<div class="onoffbtn">
+			<select id="rgbonoffbtn" data-role="slider" onchange="checkrgbbtn()">
+			<option>Off</option>
+			<option>On</option>
+			</select>
+			</div>-->
 			<div data-role="content" class="canvascls" align="center">
+				<img id="rgbonoffbtn" src="../image/switchon.svg"/>
 				<canvas id="colorPicker1"></canvas>
 				<br/>
 				<span class="colorspancls">亮度</span>
@@ -439,7 +445,7 @@
 			//		$("#torgbctrl").click(function() {
 			rgbreadtag = 0;
 			changpage("rgbctrl", "");
-			if ("On" == $("#rgbonoffbtn").find("option:selected").text()) {
+			if ("../image/switchon.svg" == $("#rgbonoffbtn").attr("src")) {
 				ctrlrgb();
 			}
 			sliderctrl();
@@ -496,6 +502,19 @@
 			//	刷新内容
 			devicelist_getDevList();
 		});
+		//rgb开关
+		$("#rgbonoffbtn").click(function() {
+			var btnsrc = $("#rgbonoffbtn").attr("src");
+			if ("../image/switchon.svg" == btnsrc) {
+				$("#rgbonoffbtn").attr("src", "../image/switchoff.svg");
+				window.clearInterval(rgbctrlinterval);
+				dealwithrgbbtn(false);
+			} else {
+				$("#rgbonoffbtn").attr("src", "../image/switchon.svg");
+				dealwithrgbbtn(true);
+				ctrlrgb();
+			}
+		});
 		//电动机控制
 		$("#motorbtn").click(function() {
 			var mtbtn = $("#motorbtn");
@@ -517,10 +536,13 @@
 		//是否开灯
 		//		var rgb_switch;rgb_hues
 		var width = 0.4 * document.body.clientHeight;
+		//按钮的高度
+		var switchbttop = width / 2 - 40.5;
 		//		var width = 250;
 		//上次的color指数
 		var lastrgbcode;
 		$('#colorPicker1').attr('width', width).attr('height', width);
+		$('#rgbonoffbtn').css('margin-top', switchbttop).css('margin-left', switchbttop);
 		var colorPicker = new colorPicker(document.getElementById('colorPicker1'), {
 			h : 0.5,
 			s : 5,
@@ -546,8 +568,10 @@
 			if (lastrgbcode == rgbcode) {
 				//没更新，不做处理
 			} else {
-				micoPublish(DEVID_GLOBAL + "/in/write/" + app1, rgbcode);
-				lastrgbcode = rgbcode;
+				if ("../image/switchon.svg" == $("#rgbonoffbtn").attr("src")) {
+					micoPublish(DEVID_GLOBAL + "/in/write/" + app1, rgbcode);
+					lastrgbcode = rgbcode;
+				}
 			}
 		}
 

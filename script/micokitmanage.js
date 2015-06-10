@@ -421,7 +421,7 @@ function jsontest(strjson) {
 					case RGB_DIC:
 						$("#rgbliid").css("display", "block");
 						//主动读取rgb设备的信息
-						readDevInfo('{"5":false,"6":0,"7":0,"8":0}');
+						readDevInfo('{"'+RGB_SWI_KEY+'":false,"'+RGB_HUES_KEY+'":0,"'+RGB_SATU_KEY+'":0,"'+RGB_BRIGHT_KEY+'":0}');
 						break;
 					case LIGHT_DIC:
 						$("#devdataid").css("display", "block");
@@ -496,9 +496,11 @@ function jsontest(strjson) {
 			} else if (key == RGB_SWI_KEY && (1 == rgbreadtag)) {
 				rgb_switch = jsonstr[key];
 				if (jsonstr[key] == true) {
-					$("#rgbonoffbtn").get(0).options[1].selected = true;
+//					$("#rgbonoffbtn").get(0).options[1].selected = true;
+					$("#rgbonoffbtn").attr("src", "../image/switchon.svg");
 				} else {
-					$("#rgbonoffbtn").get(0).options[0].selected = true;
+//					$("#rgbonoffbtn").get(0).options[0].selected = true;
+					$("#rgbonoffbtn").attr("src", "../image/switchoff.svg");
 				}
 			} else if (key == RGB_HUES_KEY && (1 == rgbreadtag)) {
 				rgb_hues = (jsonstr[key] / 360).toFixed(4);
@@ -663,16 +665,16 @@ function addchatmsg(msg) {
 * RGB控制部分
 */
 //开关灯按钮
-function checkrgbbtn() {
-	var rgbbtn = $("#rgbonoffbtn").find("option:selected").text();
-	if (rgbbtn == "On") {
-		dealwithrgbbtn(true);
-		ctrlrgb();
-	} else if (rgbbtn == "Off") {
-		window.clearInterval(rgbctrlinterval);
-		dealwithrgbbtn(false);
-	}
-}
+//function checkrgbbtn() {
+//	var rgbbtn = $("#rgbonoffbtn").find("option:selected").text();
+//	if (rgbbtn == "On") {
+//		dealwithrgbbtn(true);
+//		ctrlrgb();
+//	} else if (rgbbtn == "Off") {
+//		window.clearInterval(rgbctrlinterval);
+//		dealwithrgbbtn(false);
+//	}
+//}
 
 //专门服务于开关灯
 function dealwithrgbbtn(ifopen) {

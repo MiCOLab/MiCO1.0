@@ -6,7 +6,7 @@
 		<title>APP</title>
 		<link rel="stylesheet" type="text/css" href="../css/api.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/header.css"/>
-		<link rel="stylesheet" type="text/css" href="../css/selflist.css"/>
+		<link rel="stylesheet" type="text/css" href="selflist.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/jquery.mobile.min.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/ionic.min.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/dragdealer.css"/>
@@ -50,6 +50,11 @@
 			#tohomepage {
 				display: none;
 			}
+			#rgbonoffbtn {
+				position: absolute;
+				height: 80px;
+				width: 80px;
+			}
 		</style>
 	</head>
 	<body>
@@ -73,10 +78,31 @@
 			</ul>
 		</header>
 		<!--RGB控制-->
+		<!--RGB控制-->
 		<div class="micocontent" data-role="page" id="rgbctrl">
 			<div data-role="content" class="canvascls" align="center">
+				<img id="rgbonoffbtn" src="../image/switchon.svg"/>
 				<canvas id="colorPicker1"></canvas>
+				<br/>
+				<span class="colorspancls">亮度</span>
+				<div id="brightslider" class="dragdealer">
+					<div class="handle red-bar">
+						<span class="brightval" id="brightspanid"></span>
+					</div>
+				</div>
+				<span class="colorspancls">饱和度</span>
+				<div id="satslider" class="dragdealer">
+					<div class="handle red-bar">
+						<span class="satval" id="satspanid"></span>
+					</div>
+				</div>
 			</div>
+			<!--<div class="onoffbtn">
+			<select id="rgbonoffbtn" data-role="slider" onchange="checkrgbbtn()">
+			<option>Off</option>
+			<option>On</option>
+			</select>
+			</div>-->
 		</div>
 	</body>
 	<script type="text/javascript">
@@ -98,6 +124,17 @@
 				});
 			}
 		};
+		//rgb开关
+		$("#rgbonoffbtn").click(function() {
+			var btnsrc = $("#rgbonoffbtn").attr("src");
+			if ("../image/switchon.svg" == btnsrc) {
+				alert("ON");
+				$("#rgbonoffbtn").attr("src", "../image/switchoff.svg");
+			}else{
+				alert("OFF");
+				$("#rgbonoffbtn").attr("src", "../image/switchon.svg");
+			}
+		});
 	</script>
 	<!--以下是画圆圈的-->
 	<script type="text/javascript" src="../script/colorPicker.js"></script>
@@ -105,10 +142,12 @@
 		//是否开灯
 		//		var rgb_switch;rgb_hues
 		var width = 0.4 * document.body.clientHeight;
+		var switchbttop = width / 2 - 40.5;
 		//		var width = 250;
 		//上次的color指数
 		var lastrgbcode;
 		$('#colorPicker1').attr('width', width).attr('height', width);
+		$('#rgbonoffbtn').css('margin-top', switchbttop).css('margin-left', switchbttop);
 		var colorPicker = new colorPicker(document.getElementById('colorPicker1'), {
 			h : 0.5,
 			s : 5,

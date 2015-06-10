@@ -63,7 +63,7 @@
 	font-family: Arial;
 }
 .canvascls {
-	/*margin-top: 18px;*/
+	margin-top: 20px;
 }
 .colorspancls {
 	color: #595757;
