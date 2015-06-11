@@ -285,27 +285,27 @@
 		<div class="micocontent" data-role="page" id="ssidmanage">
 			<div class="content">
 				<div class="phone">
-					<input type="text" data-theme="f" data-role="none" placeholder="SSID" id="wifi_ssid"/>
+					<input type="text" readonly data-theme="f" data-role="none" placeholder="SSID" id="wifi_ssid"/>
 				</div>
 				<div class="psw">
 					<input type="text" data-theme="f" data-role="none" placeholder="密码" id="wifi_psw"/>
 				</div>
-				<div class="subbutton" onclick="getdevip()">
-					<a class="easysearchcls" href="#popupeasy" data-rel="popup" data-position-to="window" data-transition="none" data-dismissible="false"><span>搜索 </span></a>
+				<div class="subbutton" onclick="getdevip()" id="sousuoid">
+					<a class="easysearchcls" href="#" data-rel="popup" data-position-to="window" data-transition="none" data-dismissible="false"><span>搜索 </span></a>
 				</div>
 			</div>
-			<div data-role="popup" id="popupeasy" data-overlay-theme="b" data-dismissible="false" >
+			<!--<div data-role="popup" id="popupeasy" data-overlay-theme="b" data-dismissible="false" >
 				<img style="width:250px;" src="../image/easylink.gif"/>
 				<div class="subbutton" id="stopelbtn">
 					<a class="stopacls" data-rel="back"><span>结束配网</span></a>
 				</div>
-			</div>
+			</div>-->
 		</div>
 		<!--EasyLink密码配置-->
 		<div class="micocontent" data-role="page" id="devmanage">
 			<div class="content">
 				<div class="phone">
-					<input type="number" data-theme="f" data-role="none"  onfocus="this.type='number'" onblur="this.type='text'"  placeholder="设备密码" id="dev_psw"/>
+					<input type="text" data-theme="f" data-role="none" placeholder="设备密码" id="dev_psw"/>
 				</div>
 				<!--<div class="psw">
 				<input type="password" data-theme="f" data-role="none" placeholder="Password Confirmation" id="dev_psw_conf"/>
@@ -399,6 +399,16 @@
 	</body>
 	<script type="text/javascript">
 		var strDM;
+		//		给pop加载的时候用
+		var $jqelpop = $('<div data-role="popup" id="popupeasy" data-overlay-theme="b" data-dismissible="false" >'
+				+'<img style="width:250px;" src="../image/easylink.gif"/>'
+				+'<div class="subbutton" id="stopelbtn">'
+				+'<a class="stopacls" data-rel="back"><span>结束配网</span></a>'
+				+'</div>'
+				+'</div>');
+		$jqelpop.appendTo($("#sousuoid")).popup();
+		
+		
 		apiready = function() {
 			api.removeLaunchView();
 			var header = $api.byId('header');

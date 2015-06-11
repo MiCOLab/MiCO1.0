@@ -382,7 +382,6 @@ function mqttconnect(deviceid) {
 	app1 = clientID;
 	//	var clientID = deviceid.split("/")[1];
 	//	apiToast(clientID, 2000);
-//	alert("准备Subscribe");
 	micoSubscribe(host, username, password, deviceid + "/out/#", clientID);
 	sleeprun(deviceid);
 	mqttSign = 1;
@@ -407,7 +406,7 @@ function chgtxt(messageObj) {
 
 function jsontest(strjson) {
 	//传来的是String型的要转成json
-//	alert(JSON.stringify(strjson));
+	//				alert(strjson);
 	//apiToast("strjson = "+JSON.stringify(strjson), 5000);
 	var jsonstr = strjson;
 	//	var jsonstr = $api.strToJson(strjson);
@@ -711,12 +710,10 @@ function getWifiSsid() {
 
 //获取设备ip
 function getdevip() {
-	//	$("#popupeasy").popup("open");
-	setTimeout('$("#popupeasy").popup("open")', 1000);
 	//此时正在搜索设备，不允许返回
 	PAGETAG = 100;
 	getdevipSign = 1;
-	//setTimeout("overTime('getdevipSign',getdevipSign)", 45000);
+	//	setTimeout("overTime('getdevipSign',getdevipSign)", 45000);
 
 	micobindobj = api.require('micoBind');
 	var wifi_ssid = $("#wifi_ssid").val();

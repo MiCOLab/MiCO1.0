@@ -36,7 +36,7 @@ function micoSubscribe(host, username, password, topicStr, clientID) {
 	var clientID = clientID;
 	var topic = topicStr;
 	//	apiToast("Subscribe 01", 1000);
-	//	alert("host = " + host + "username " + username + "password " + password + "clientID " + clientID + "topic " + topic)
+	//	alert("进入Subscribe---> host = " + host + "username " + username + "password " + password + "clientID " + clientID + "topic " + topic)
 	micoMqtt.startMqtt({
 		micoMqtt : micoMqtt,
 		host : host,
@@ -45,10 +45,12 @@ function micoSubscribe(host, username, password, topicStr, clientID) {
 		clientID : clientID,
 		topic : topic
 	}, function(rets, errs) {
+		//		alert("Subscribe有返回");
 		if (rets.status) {
 			//			apiToast("Subscribe ret = " + JSON.stringify(rets), 1000);
 			micoMqtt.recvMqttMsg(function(retr, errr) {
 				//				apiToast("recvMqttMsg ret = " + JSON.stringify(retr.subs), 1000);
+				//				if(errr){alert("返回错误" + JSON.stringify(errr));}
 				chgtxt(retr.subs);
 			});
 		} else {
