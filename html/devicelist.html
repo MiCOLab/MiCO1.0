@@ -64,6 +64,22 @@
 				height: 80px;
 				width: 80px;
 			}
+			.easysearchcls {
+				display: block;
+				width: 100%;
+			}
+			.stopacls {
+				display: block;
+				width: 100%;
+			}
+			#stopelbtn {
+				margin-top: 0px;
+				background-image: url();
+				background-color: #EFEFEF;
+			}
+			#stopelbtn a span {
+				color: #105284;
+			}
 		</style>
 	</head>
 	<body>
@@ -276,7 +292,13 @@
 					<input type="text" data-theme="f" data-role="none" placeholder="密码" id="wifi_psw"/>
 				</div>
 				<div class="subbutton" onclick="getdevip()">
-					<span><a href="#">搜索</a></span>
+					<a class="easysearchcls" href="#popupeasy" data-rel="popup" data-position-to="window" data-transition="none" data-dismissible="false"><span>搜索 </span></a>
+				</div>
+			</div>
+			<div data-role="popup" id="popupeasy" data-overlay-theme="b" data-dismissible="false" >
+				<img style="width:250px;" src="../image/easylink.gif"/>
+				<div class="subbutton" id="stopelbtn">
+					<a class="stopacls" data-rel="back"><span>结束配网</span></a>
 				</div>
 			</div>
 		</div>
@@ -290,7 +312,7 @@
 				<input type="password" data-theme="f" data-role="none" placeholder="Password Confirmation" id="dev_psw_conf"/>
 				</div>-->
 				<div class="subbutton" onclick="ajaxgetdveid()">
-					<span><a href="#">保存</a></span>
+					<a href="#"><span>保存</span></a>
 				</div>
 				<div class="savetipscls" align="center">
 					<span>设备需要重启，请5秒后再点击保存。</span>
@@ -443,7 +465,7 @@
 		//		前往rgb页面
 		$("#rgbliid").click(function() {
 			//		$("#torgbctrl").click(function() {
-			rgbreadtag = 0;
+			//			rgbreadtag = 0;
 			changpage("rgbctrl", "");
 			if ("../image/switchon.svg" == $("#rgbonoffbtn").attr("src")) {
 				ctrlrgb();
@@ -501,6 +523,11 @@
 			changpage("homePage", "MiCOKit");
 			//	刷新内容
 			devicelist_getDevList();
+		});
+		//停止EasyLink
+		$("#stopelbtn").click(function() {
+			stopEasyLink();
+			PAGETAG = 5;
 		});
 		//rgb开关
 		$("#rgbonoffbtn").click(function() {

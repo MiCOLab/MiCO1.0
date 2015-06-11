@@ -421,7 +421,7 @@ function jsontest(strjson) {
 					case RGB_DIC:
 						$("#rgbliid").css("display", "block");
 						//主动读取rgb设备的信息
-						readDevInfo('{"'+RGB_SWI_KEY+'":false,"'+RGB_HUES_KEY+'":0,"'+RGB_SATU_KEY+'":0,"'+RGB_BRIGHT_KEY+'":0}');
+						readDevInfo('{"' + RGB_SWI_KEY + '":false,"' + RGB_HUES_KEY + '":0,"' + RGB_SATU_KEY + '":0,"' + RGB_BRIGHT_KEY + '":0}');
 						break;
 					case LIGHT_DIC:
 						$("#devdataid").css("display", "block");
@@ -496,10 +496,10 @@ function jsontest(strjson) {
 			} else if (key == RGB_SWI_KEY && (1 == rgbreadtag)) {
 				rgb_switch = jsonstr[key];
 				if (jsonstr[key] == true) {
-//					$("#rgbonoffbtn").get(0).options[1].selected = true;
+					//					$("#rgbonoffbtn").get(0).options[1].selected = true;
 					$("#rgbonoffbtn").attr("src", "../image/switchon.svg");
 				} else {
-//					$("#rgbonoffbtn").get(0).options[0].selected = true;
+					//					$("#rgbonoffbtn").get(0).options[0].selected = true;
 					$("#rgbonoffbtn").attr("src", "../image/switchoff.svg");
 				}
 			} else if (key == RGB_HUES_KEY && (1 == rgbreadtag)) {
@@ -710,11 +710,10 @@ function getWifiSsid() {
 
 //获取设备ip
 function getdevip() {
-	showProgress(CONNECT_NET, false);
 	//此时正在搜索设备，不允许返回
 	PAGETAG = 100;
 	getdevipSign = 1;
-	setTimeout("overTime('getdevipSign',getdevipSign)", 45000);
+	//	setTimeout("overTime('getdevipSign',getdevipSign)", 45000);
 
 	micobindobj = api.require('micoBind');
 	var wifi_ssid = $("#wifi_ssid").val();
@@ -723,22 +722,20 @@ function getdevip() {
 		wifi_ssid : wifi_ssid,
 		wifi_password : wifi_psw
 	}, function(ret, err) {
-		//	alert("ip = "+ret.devip);
 		if (1 == getdevipSign) {
 			getdevipSign = 0;
 			if (ret.devip) {
 				dev_token = $.md5(ret.devip + userToken);
 				dev_ip = ret.devip;
 				changpage("devmanage", "设置设备密码");
-				hidPro();
 				$("#backleft").css("display", "none");
 			} else {
 				$("#backleft").css("display", "block");
-				hidPro();
 				api.alert({
 					msg : err.msg
 				});
 			}
+			$("#popupeasy").popup("close");
 		}
 	});
 }
@@ -915,23 +912,24 @@ function checkpage() {
 	} else if (PAGETAG == 0) {
 		apiToast(NOT_ALW_RT, 2000);
 	} else if (PAGETAG == 100) {
-		hidPro();
-		api.confirm({
-			title : SETTING,
-			msg : WAIT_THIRTY_SEC,
-			buttons : [OK_BTN, CANCEL_BTN]
-		}, function(ret, err) {
-			if (ret.buttonIndex == 1) {
-				//do something 点确定
-				apiToast(GOOD_JOB, 2000);
-				showProgress(CONNECT_NET, true);
-			} else {
-				//do otherthing 点取消
-				stopEasyLink();
-				apiToast(AGA_T_DEVLIST, 2000);
-				PAGETAG = 5;
-			}
-		});
+		//		hidPro();
+		//		api.confirm({
+		//			title : SETTING,
+		//			msg : WAIT_THIRTY_SEC,
+		//			buttons : [OK_BTN, CANCEL_BTN]
+		//		}, function(ret, err) {
+		//			if (ret.buttonIndex == 1) {
+		//				//do something 点确定
+		//				apiToast(GOOD_JOB, 2000);
+		//				showProgress(CONNECT_NET, true);
+		//			} else {
+		//do otherthing 点取消
+		//		stopEasyLink();
+		//				apiToast(AGA_T_DEVLIST, 2000);
+		//				PAGETAG = 5;
+		//			}
+		//		});
+		apiToast(CANCLE_FIRST, 2000);
 	} else if (PAGETAG == 101) {
 		hidPro();
 		api.confirm({
