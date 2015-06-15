@@ -62,6 +62,7 @@
 				position: absolute;
 				height: 80px;
 				width: 80px;
+				z-index: 999;
 			}
 			.easysearchcls {
 				display: block;
@@ -257,8 +258,8 @@
 			<option>On</option>
 			</select>
 			</div>-->
+			<img id="rgbonoffbtn" src="../image/switchon.svg"/>
 			<div data-role="content" class="canvascls" align="center">
-				<img id="rgbonoffbtn" src="../image/switchon.svg"/>
 				<canvas id="colorPicker1"></canvas>
 				<br/>
 				<span class="colorspancls">亮度</span>
@@ -295,10 +296,10 @@
 				</div>
 			</div>
 			<!--<div data-role="popup" id="popupeasy" data-overlay-theme="b" data-dismissible="false" >
-				<img style="width:250px;" src="../image/easylink.gif"/>
-				<div class="subbutton" id="stopelbtn">
-					<a class="stopacls" data-rel="back"><span>结束配网</span></a>
-				</div>
+			<img style="width:250px;" src="../image/easylink.gif"/>
+			<div class="subbutton" id="stopelbtn">
+			<a class="stopacls" data-rel="back"><span>结束配网</span></a>
+			</div>
 			</div>-->
 		</div>
 		<!--EasyLink密码配置-->
@@ -400,15 +401,8 @@
 	<script type="text/javascript">
 		var strDM;
 		//		给pop加载的时候用
-		var $jqelpop = $('<div data-role="popup" id="popupeasy" data-overlay-theme="b" data-dismissible="false" >'
-				+'<img style="width:250px;" src="../image/easylink.gif"/>'
-				+'<div class="subbutton" id="stopelbtn">'
-				+'<a class="stopacls" data-rel="back"><span>结束配网</span></a>'
-				+'</div>'
-				+'</div>');
+		var $jqelpop = $('<div data-role="popup" id="popupeasy" data-overlay-theme="b" data-dismissible="false" >' + '<img style="width:250px;" src="../image/easylink.gif"/>' + '<div class="subbutton" id="stopelbtn">' + '<a class="stopacls" data-rel="back"><span>结束配网</span></a>' + '</div>' + '</div>');
 		$jqelpop.appendTo($("#sousuoid")).popup();
-		
-		
 		apiready = function() {
 			api.removeLaunchView();
 			var header = $api.byId('header');
@@ -569,16 +563,21 @@
 	<!--以下是画圆圈的-->
 	<script type="text/javascript" src="../script/colorPicker.js"></script>
 	<script>
+		//亮度和饱和度
+		var bsliderMask;
+		var ssliderMask;
 		//是否开灯
 		//		var rgb_switch;rgb_hues
-		var width = 0.4 * document.body.clientHeight;
-		//按钮的高度
-		var switchbttop = width / 2 - 40.5;
+		var width = 0.69 * document.body.clientWidth;
+		//		var width = 0.4 * document.body.clientHeight;
+		//按钮的高度,手机会有少许偏移，所以设成上移3个px
+		var switchbttop = width / 2 - 3;
+		var switchbleft = (document.body.clientWidth / 2) - 41;
 		//		var width = 250;
 		//上次的color指数
 		var lastrgbcode;
 		$('#colorPicker1').attr('width', width).attr('height', width);
-		$('#rgbonoffbtn').css('margin-top', switchbttop).css('margin-left', switchbttop);
+		$('#rgbonoffbtn').css('margin-top', switchbttop).css('margin-left', switchbleft);
 		var colorPicker = new colorPicker(document.getElementById('colorPicker1'), {
 			h : 0.5,
 			s : 5,
@@ -613,14 +612,14 @@
 
 		function sliderctrl() {
 			//亮度
-			var bsliderMask = new Dragdealer('brightslider', {
+			bsliderMask = new Dragdealer('brightslider', {
 				animationCallback : function(x, y) {
 					$('#brightspanid').val(Math.round(x * 100));
 				}
 			});
 			bsliderMask.setValue(rgb_bright, 0, true);
 			//饱和度
-			var ssliderMask = new Dragdealer('satslider', {
+			ssliderMask = new Dragdealer('satslider', {
 				animationCallback : function(x, y) {
 					$('#satspanid').val(Math.round(x * 100));
 				}

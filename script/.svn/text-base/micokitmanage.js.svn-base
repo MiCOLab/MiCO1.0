@@ -64,6 +64,8 @@ var devlisttag;
 var devAuthtag;
 //防止设备离线所定义的全局设备信息标记
 var devinfo;
+//系统版本标记
+var sysverid = 0;
 //界面是否可以touchmove
 var touchmove_listener = function(event) {
 	event.preventDefault();
@@ -382,7 +384,7 @@ function mqttconnect(deviceid) {
 	app1 = clientID;
 	//	var clientID = deviceid.split("/")[1];
 	//	apiToast(clientID, 2000);
-//	alert("准备Subscribe");
+	//	alert("准备Subscribe");
 	micoSubscribe(host, username, password, deviceid + "/out/#", clientID);
 	sleeprun(deviceid);
 	mqttSign = 1;
@@ -407,7 +409,7 @@ function chgtxt(messageObj) {
 
 function jsontest(strjson) {
 	//传来的是String型的要转成json
-//	alert(JSON.stringify(strjson));
+	//	alert(JSON.stringify(strjson));
 	//apiToast("strjson = "+JSON.stringify(strjson), 5000);
 	var jsonstr = strjson;
 	//	var jsonstr = $api.strToJson(strjson);
@@ -508,8 +510,14 @@ function jsontest(strjson) {
 				setcirclesit(rgb_hues);
 			} else if (key == RGB_SATU_KEY && (1 == rgbreadtag)) {
 				rgb_statu = (jsonstr[key] / 100).toFixed(2);
+				if(ssliderMask){
+					ssliderMask.setValue(rgb_statu, 0, true);
+				}
 			} else if (key == RGB_BRIGHT_KEY && (1 == rgbreadtag)) {
 				rgb_bright = (jsonstr[key] / 100).toFixed(2);
+				if(bsliderMask){
+					bsliderMask.setValue(rgb_bright, 0, true);
+				}
 			} else if (key == MOTOR_KEY) {
 				if ("0" == jsonstr[key]) {
 					$("#motorbtn").attr("src", "../image/smallicon-8kaiguan.png");
@@ -712,11 +720,16 @@ function getWifiSsid() {
 //获取设备ip
 function getdevip() {
 	//	$("#popupeasy").popup("open");
-	setTimeout('$("#popupeasy").popup("open")', 1000);
+	if (api.systemVersion < "4.2") {
+		showProgress(CONNECT_NET, false);
+		//		setTimeout("overTime('getdevipSign',getdevipSign)", 45000);
+		sysverid = 1;
+	} else {
+		setTimeout('$("#popupeasy").popup("open")', 1000);
+	}
 	//此时正在搜索设备，不允许返回
 	PAGETAG = 100;
 	getdevipSign = 1;
-	//setTimeout("overTime('getdevipSign',getdevipSign)", 45000);
 
 	micobindobj = api.require('micoBind');
 	var wifi_ssid = $("#wifi_ssid").val();
@@ -727,13 +740,20 @@ function getdevip() {
 	}, function(ret, err) {
 		if (1 == getdevipSign) {
 			getdevipSign = 0;
+			sysverid = 0;
 			if (ret.devip) {
 				dev_token = $.md5(ret.devip + userToken);
 				dev_ip = ret.devip;
 				changpage("devmanage", "设置设备密码");
+				if (1 == sysverid) {
+					hidPro();
+				}
 				$("#backleft").css("display", "none");
 			} else {
 				$("#backleft").css("display", "block");
+				if (1 == sysverid) {
+					hidPro();
+				}
 				api.alert({
 					msg : err.msg
 				});
@@ -915,24 +935,27 @@ function checkpage() {
 	} else if (PAGETAG == 0) {
 		apiToast(NOT_ALW_RT, 2000);
 	} else if (PAGETAG == 100) {
-		//		hidPro();
-		//		api.confirm({
-		//			title : SETTING,
-		//			msg : WAIT_THIRTY_SEC,
-		//			buttons : [OK_BTN, CANCEL_BTN]
-		//		}, function(ret, err) {
-		//			if (ret.buttonIndex == 1) {
-		//				//do something 点确定
-		//				apiToast(GOOD_JOB, 2000);
-		//				showProgress(CONNECT_NET, true);
-		//			} else {
-		//do otherthing 点取消
-		//		stopEasyLink();
-		//				apiToast(AGA_T_DEVLIST, 2000);
-		//				PAGETAG = 5;
-		//			}
-		//		});
-		apiToast(CANCLE_FIRST, 2000);
+		if (1 == sysverid) {
+			hidPro();
+			api.confirm({
+				title : SETTING,
+				msg : WAIT_THIRTY_SEC,
+				buttons : [OK_BTN, CANCEL_BTN]
+			}, function(ret, err) {
+				if (ret.buttonIndex == 1) {
+					//do something 点确定
+					apiToast(GOOD_JOB, 2000);
+					showProgress(CONNECT_NET, true);
+				} else {
+					//		do otherthing 点取消
+					stopEasyLink();
+					apiToast(AGA_T_DEVLIST, 2000);
+					PAGETAG = 5;
+				}
+			});
+		} else {
+			apiToast(CANCLE_FIRST, 2000);
+		}
 	} else if (PAGETAG == 101) {
 		hidPro();
 		api.confirm({
